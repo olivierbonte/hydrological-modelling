@@ -6,11 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Olivier Bonte">
-<meta name="author" content="Hans Lievens">
-<meta name="dcterms.date" content="2026-05-21">
 
-<title>Exercises Hydrological Modelling</title>
+<title>8&nbsp; Exercise 5: Data assimilation – Exercises Hydrological Modelling</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -36,7 +33,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./practical_info.html" rel="next">
+<link href="./references.html" rel="next">
+<link href="./4_model_uncertainty.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -105,7 +103,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./5_data_assimilation.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Exercise 5: Data assimilation</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -119,7 +117,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
@@ -161,7 +159,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./5_data_assimilation.html" class="sidebar-item-text sidebar-link">
+  <a href="./5_data_assimilation.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Exercise 5: Data assimilation</span></span></a>
   </div>
 </li>
@@ -176,56 +174,22 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Exercises Hydrological Modelling</h1>
-<p class="subtitle lead">Academic year: 2025 - 2026</p>
+<h1 class="title"><span id="sec-assimilation" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Exercise 5: Data assimilation</span></span></h1>
 </div>
 
 
-<div class="quarto-title-meta-author">
-  <div class="quarto-title-meta-heading">Authors</div>
-  <div class="quarto-title-meta-heading">Affiliation</div>
-  
-    <div class="quarto-title-meta-contents">
-    <p class="author">Olivier Bonte <a href="mailto:olivier.bonte@ugent.be" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
-  </div>
-  <div class="quarto-title-meta-contents">
-        <p class="affiliation">
-            Ghent University
-          </p>
-      </div>
-    <div class="quarto-title-meta-contents">
-    <p class="author">Hans Lievens <a href="mailto:hans.lievens@ugent.be" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
-  </div>
-  <div class="quarto-title-meta-contents">
-        <p class="affiliation">
-            Ghent University
-          </p>
-      </div>
-  </div>
 
 <div class="quarto-title-meta">
 
-      
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">May 21, 2026</p>
-    </div>
-  </div>
+    
   
     
   </div>
@@ -235,27 +199,8 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="introduction" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
-<p>This book contains exercises for the course <a href="https://studiekiezer.ugent.be/2026/studiefiche/en/I002659">Hydrological Modelling</a> at Ghent University. The focus of this set of exercises will be on rainfall-runoff modelling with a conceptual hydrological model.</p>
-<p>The objective of the practical exercises of this course is to illustrate some of the most important steps necessary to perform a proper modelling of a medium-scale catchment in Flanders. Only some specific steps of the process will be illustrated here across 5 exercises:</p>
-<ol type="1">
-<li>Delineation of the catchment (<a href="1_catchment_delineation.html" class="quarto-xref"><span>Chapter 4</span></a>)</li>
-<li>Implementation of a hydrological model (<a href="2_model_implementation.html" class="quarto-xref"><span>Chapter 5</span></a>)</li>
-<li>Calibration of the hydrological model (<a href="3_model_calibration.html" class="quarto-xref"><span>Chapter 6</span></a>)</li>
-<li>The analysis of uncertainty in the model output of the model (<a href="4_model_uncertainty.html" class="quarto-xref"><span>Chapter 7</span></a>)</li>
-<li>Assimilation of observations into the model (<a href="5_data_assimilation.html" class="quarto-xref"><span>Chapter 8</span></a>).</li>
-</ol>
-<p>Needless to say that for each step, there are many options, and that the choice for e.g.&nbsp;a specific model, calibration algorithm, or evaluation criterium depends on the specific situation, the aim of the modelling exercise, and the personal taste of the modeller. For an extensive – yet non-exhaustive – overview of different techniques in hydrological modelling, we refer to the theoretical course notes and specialized literature.</p>
-<p>The aim of the practicals is to:</p>
-<ol type="1">
-<li>Make you acquainted with the advantages and disadvantages of the selected algorithms,</li>
-<li>Make you aware of the potential problems related to modelling rainfall-runoff relationships, and</li>
-<li>Point you to and make you reflect on existing alternatives for the algorithms selected here.</li>
-</ol>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -660,10 +605,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./4_model_uncertainty.html" class="pagination-link" aria-label="Exercise 4:Uncertainty analysis of the model output">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Exercise 4:Uncertainty analysis of the model output</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./practical_info.html" class="pagination-link" aria-label="Practical information">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Practical information</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./references.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
