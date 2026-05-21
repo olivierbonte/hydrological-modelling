@@ -1,0 +1,5 @@
+# Practical information 
+
+## Working with Quarto
+
+## Evaluation 

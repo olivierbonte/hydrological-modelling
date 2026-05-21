@@ -20,9 +20,15 @@ book:
     logo: "figures/logo_H-CEL_no_background.svg"
   chapters:
     - index.qmd
-    - intro.qmd
-    - summary.qmd
+    - practical_info.qmd
+    - study_area_and_data.qmd
+    - 1_catchment_delineation.qmd
+    - 2_model_implementation.qmd
+    - 3_model_calibration.qmd
+    - 4_model_uncertainty.qmd
+    - 5_data_assimilation.qmd
     - references.qmd
+number-sections: true
 
 bibliography: references.bib
 jupyter: python3

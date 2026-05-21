@@ -1,5 +1,21 @@
-# Preface {.unnumbered}
+# Introduction
 
-This is a Quarto book.
+This book contains exercises for the course [Hydrological Modelling](https://studiekiezer.ugent.be/2026/studiefiche/en/I002659) at Ghent University. The focus of this set of exercises will be on rainfall-runoff modelling with a conceptual hydrological model. 
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+The objective of the practical exercises of this course is to illustrate some of the most important steps necessary to perform a proper modelling of a medium-scale catchment in Flanders. Only some specific steps of the process will be illustrated here across 5 exercises: 
+
+1. Delineation of the catchment (@sec-delineation)
+2. Implementation of a hydrological model (@sec-implementation)
+3. Calibration of the hydrological model (@sec-calibration)
+4. The analysis of uncertainty in the model output of the model (@sec-uncertainty)
+5. Assimilation of observations into the model (@sec-assimilation).
+
+Needless to say that for each step, there are many options, and that the choice for e.g. a specific model, calibration algorithm, or evaluation criterium depends on the specific situation, the aim of the modelling exercise, and the personal taste of the modeller. For an extensive -- yet non-exhaustive -- overview of different techniques in hydrological modelling, we refer to the theoretical course notes and specialized literature.  
+
+The aim of the practicals is to:
+
+1. Make you acquainted with the advantages and disadvantages
+of the selected algorithms, 
+2. Make you aware of the potential problems related to modelling
+rainfall-runoff relationships, and 
+3. Point you to and make you reflect on existing alternatives for the algorithms selected here.

@@ -1,0 +1,3 @@
+# Study area and data {#sec-study-area}
+
+For these exercises, a hydrological dataset collected in the Zwalm catchment will be used. The Zwalm catchment is located in the center of Belgium and can be considered as a medium-scale catchment.
