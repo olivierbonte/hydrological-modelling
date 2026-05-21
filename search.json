@@ -2,7 +2,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "quarto_template_ugent",
+    "title": "Exercises Hydrological Modelling",
     "section": "",
     "text": "Preface\nThis is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.",
     "crumbs": [
@@ -34,7 +34,7 @@
     "href": "references.html",
     "title": "References",
     "section": "",
-    "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput.\nJ. (USA) 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.\n\n\n \nBelow, you find information about the computational environment that was used to generate the rendered version of this document.\n\n\nQuarto 1.9.37\n\n      Quarto cache location: /home/runner/.cache/quarto\n\n      Pandoc version 3.8.3: OK\n\n      Dart Sass version 1.87.0: OK\n\n      Deno version 2.4.5: OK\n\n      Typst version 0.14.2: OK\n\n      Version: 1.9.37\n\n      Path: /opt/quarto/bin\n\n\n\n      TinyTeX: v2026.05\n\n      Chrome Headless Shell: 149.0.7827.22\n\n      Chromium: (not installed)\n\n      VeraPDF: (not installed)\n\n\n\n      Using: TinyTex\n\n      Path: /home/runner/.TinyTeX/bin/x86_64-linux\n\n      Version: 2026\n\n\n\n      Using: Chrome Headless Shell installed by Quarto\n\n      Path: /home/runner/.local/share/quarto/chrome-headless-shell/chrome-headless-shell-linux64/chrome-headless-shell\n\n      Version: 149.0.7827.22\n\n\n\n      Unable to locate an installed version of R.\n      Install R from https://cloud.r-project.org/\n\n\n\n      Version: 3.13.13 (Conda)\n      Path: /usr/share/miniconda/envs/quarto_template/bin/python\n      Jupyter: 5.9.1\n      Kernels: python3",
+    "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput.\nJ. (USA) 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.\n\n\n \nBelow, you find information about the computational environment that was used to generate the rendered version of this document.\n\n\nQuarto 1.9.37\n\n      Quarto cache location: /home/olivier_bonte/.cache/quarto\n\n      Pandoc version 3.8.3: OK\n\n      Dart Sass version 1.87.0: OK\n\n      Deno version 2.4.5: OK\n\n      Typst version 0.14.2: OK\n\n      Version: 1.9.37\n\n      Path: /opt/quarto/bin\n\n\n\n      TinyTeX: v2026.04\n\n      Chromium: (not installed)\n\n      Chrome Headless Shell: (not installed)\n\n      VeraPDF: (not installed)\n\n\n\n      Using: TinyTex\n\n      Path: /home/olivier_bonte/.TinyTeX/bin/x86_64-linux\n\n      Version: 2026\n\n\n\n      Using: Chrome found on system\n\n      Path: /usr/bin/google-chrome\n\n      Source: PATH\n\n\n\n      Unable to locate an installed version of R.\n      Install R from https://cloud.r-project.org/\n\n\n\n      Version: 3.13.13 (Conda)\n      Path: /home/olivier_bonte/miniconda3/envs/hydromod_env/bin/python\n      Jupyter: 5.9.1\n      Kernels: python3, julia-1.10, julia-1.11",
     "crumbs": [
       "References"
     ]
