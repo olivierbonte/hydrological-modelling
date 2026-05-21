@@ -1,6 +1,4 @@
-# quarto_template_ugent
-
-A starting point for making courses with Quarto at Ghent University with a focus on using Python code. 
+# Hydrological-modelling
 
 ## Installation instructions (local setup)
 

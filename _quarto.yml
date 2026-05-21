@@ -2,7 +2,7 @@ project:
   type: book
 
 book:
-  title: "quarto_template_ugent"
+  title: "Exercises Hydrological Modelling"
   subtitle: "Academic year: 2025 - 2026"
   author: 
     name: Olivier Bonte
@@ -12,7 +12,7 @@ book:
   downloads: [pdf]
   repo-url: https://github.com/olivierbonte/quarto_template_ugent
   navbar: 
-    title: "quarto_template_ugent"
+    title: "Exercises Hydrological Modelling"
     search: true 
     logo: "figures/logo_H-CEL_no_background.svg"
   chapters:
