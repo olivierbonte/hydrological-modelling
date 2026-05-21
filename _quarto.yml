@@ -5,9 +5,12 @@ book:
   title: "Exercises Hydrological Modelling"
   subtitle: "Academic year: 2025 - 2026"
   author: 
-    name: Olivier Bonte
-    affiliation: Ghent University
-    email: olivier.bonte@ugent.be  
+    - name: Olivier Bonte
+      affiliation: Ghent University
+      email: olivier.bonte@ugent.be  
+    - name: Hans Lievens
+      affiliation: Ghent University
+      email: hans.lievens@ugent.be
   date: today
   downloads: [pdf]
   repo-url: https://github.com/olivierbonte/quarto_template_ugent
@@ -39,3 +42,6 @@ format:
 execute:
   cache: true
   freeze: auto
+
+editor:
+  render-on-save: true
