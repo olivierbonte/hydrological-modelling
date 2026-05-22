@@ -12,3 +12,7 @@ dtm_raw_dir = raw_data_dir / "DTM"
 dtm_processed_dir = processed_data_dir / "DTM"
 DTM_SPATIAL_RESOLUTION = 1.0  # in meters
 DTM_SPATIAL_RESOLUTION_UPSCALED = 10.0  # in meters
+CRS = "http://www.opengis.net/def/crs/EPSG/0/31370"
+XMIN, XMAX, YMIN, YMAX = 98_000, 116_000, 160_000, 180_000  # extent in m (EPSG:31370)
+NO_DATA_VALUE_DTM = -9999.0
+WCS_ENDPOINT_DTM = "https://geo.api.vlaanderen.be/dhmv/wcs"
