@@ -7,4 +7,10 @@ dependencies:
   - jupyterlab=4.4
   - matplotlib=3.10
   - numpy=2.4
+  - geopandas=1.1
+  - rioxarray=0.22
   - jupyter-cache=1.0
+  - owslib=0.35
+  - pip
+  - pip:
+    - rootutils==1.0.*
