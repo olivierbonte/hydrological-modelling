@@ -20,3 +20,9 @@ Download file: [`waterinfo_download.py`](waterinfo_download.py)
     - Catchment rainfall (merging radar + pluviograph) for L06_342
     - Pluviograph rainfall from Maarke-Kerkem (P06_014)
 - Potential evapotranspiration: Daily total potential evapotranspiration [mm] calculated with the Penman method at the meteorological station in Waregem (ME05_019)
+
+## Vlaamse Hydrografische Atlas (VHA)
+
+Download file: [`vha_download.py`](vha_download.py)
+
+De [Vlaamse Hydrografische Atlas](https://metadata.vlaanderen.be/srv/api/records/d5a7a3df-a8a5-4516-92c4-d0128eea7fd7?language=dut) contains the current trajectories of all waterways in Flanders. The vector data is requested via [OWSLib](https://github.com/geopython/OWSLib) for the same Zwalm region as the DTM, using the [Web Feature Service (WFS) provided by the Flemish Government](https://www.vlaanderen.be/datavindplaats/catalogus/wfs-vlaamse-hydrografische-atlas-waterlopen). Alternatively, one could (as of 26/05/2026), download the dataset manually via [this url](https://www.vlaanderen.be/datavindplaats/catalogus/vlaamse-hydrografische-atlas-waterlopen-toestand-03-02-2026). 
