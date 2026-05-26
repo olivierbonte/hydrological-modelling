@@ -25,15 +25,24 @@ XMIN, XMAX, YMIN, YMAX = 98_000, 116_000, 160_000, 180_000  # extent in m (EPSG:
 NO_DATA_VALUE_DTM = -9999.0
 WCS_ENDPOINT_DTM = "https://geo.api.vlaanderen.be/dhmv/wcs"
 
+# Waterinfo variables
+TIMESPACING_DICT = {"P1D": "daily"}
+DAILY_AGG = "Day"
+TOTAL_AGG = "Total"
+MEAN_AGG = "Mean"
+
 # Pluvio station info
 STATION_ID_MAARKE_KERKEM = "P06_014"
+PRECIPITATION_LONGNAME = "Precipitation"
 
 # Meteo station info
 STATION_ID_WAREGEM = "ME05_019"
+POTENTIAL_EVAPOTRANSPIRATION_LONGNAME = "Potential Evapotranspiration"
+PENMAN_SUFFIX = "Penman"
 
 # Discharge station info
 STATION_ID_NEDERZWALM = "L06_342"
 PRECIP_CATCHMENT_LONGNAME = "Precipitation of catchment"
 PRECIP_CATCHMENT_TS_NAME = "Rro.DagTot"
-
-TIMESPACING_DICT = {"P1D": "daily"}
+PRECIP_CATCHMENT_SUFFIX = "(rro)"
+DISCHARGE_LONGNAME = "River Discharge"

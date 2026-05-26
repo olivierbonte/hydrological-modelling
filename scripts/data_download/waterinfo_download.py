@@ -1,13 +1,21 @@
 # %% Imports
 import pandas as pd
 from conf import (
+    DAILY_AGG,
+    DISCHARGE_LONGNAME,
     DISCHARGE_RAW_DIR,
+    MEAN_AGG,
+    POTENTIAL_EVAPOTRANSPIRATION_LONGNAME,
     POTENTIAL_EVAPOTRANSPIRATION_RAW_DIR,
+    PRECIP_CATCHMENT_LONGNAME,
+    PRECIP_CATCHMENT_SUFFIX,
+    PRECIPITATION_LONGNAME,
     PRECIPITATION_RAW_DIR,
     STATION_ID_MAARKE_KERKEM,
     STATION_ID_NEDERZWALM,
     STATION_ID_WAREGEM,
     TIMESPACING_DICT,
+    TOTAL_AGG,
 )
 from pywaterinfo import Waterinfo
 
@@ -29,93 +37,88 @@ def _parse_date_columns(
     return df
 
 
+def _download_daily_timeseries(station_info: pd.DataFrame) -> pd.DataFrame:
+    """Download full daily timeseries for a filtered station_info DataFrame with exactly 1 entry."""
+    if len(station_info) != 1:
+        raise ValueError(
+            f"Expected exactly 1 entry in station_info, got {len(station_info)}."
+        )
+    ts_id = station_info["ts_id"].values[0]
+    return (
+        vmm.get_timeseries_values(
+            ts_id=ts_id,
+            start=station_info["from"].dt.date.values[0],
+            end=station_info["to"].dt.date.values[0],
+        )
+        .reset_index()
+        .assign(
+            Timestamp=lambda df: pd.to_datetime(pd.to_datetime(df["Timestamp"]).dt.date)
+        )
+        .set_index("Timestamp")
+    )
+
+
+def _write_timeseries(
+    df: pd.DataFrame,
+    station_info: pd.DataFrame,
+    output_dir,
+    variable_longname: str,
+    station_id: str,
+) -> None:
+    """Write timeseries data and its metadata to CSV files in output_dir."""
+    time_spacing = TIMESPACING_DICT[station_info["ts_spacing"].values[0]]
+    variable_longname = variable_longname.replace(" ", "_").lower()
+    df.to_csv(output_dir / f"{variable_longname}_{station_id}_{time_spacing}.csv")
+    station_info.to_csv(
+        output_dir / f"{variable_longname}_meta_{station_id}_{time_spacing}.csv",
+        index=False,
+    )
+
+
 # %% Nederzwalm/Zwalmbeek (L06_342)
 station_info_nz = _parse_date_columns(vmm.get_timeseries_list(STATION_ID_NEDERZWALM))
 
 ## Catchment precipitation
 station_info_nz_precip = station_info_nz.query(
-    "stationparameter_longname == 'Precipitation of catchment' and ts_name == 'Rro.DagTot'"
+    f"stationparameter_longname == '{PRECIP_CATCHMENT_LONGNAME}'"
+    f" and ts_shortname == '{DAILY_AGG}.{TOTAL_AGG}.{PRECIP_CATCHMENT_SUFFIX}'"
 )
-
-ts_id_nz_precip = station_info_nz_precip["ts_id"].values[0]
-df_nz_precip = (
-    vmm.get_timeseries_values(
-        ts_id=ts_id_nz_precip,
-        start=station_info_nz_precip["from"].dt.date.values[0],
-        end=station_info_nz_precip["to"].dt.date.values[0],
-    )
-    .reset_index()
-    .assign(
-        Timestamp=lambda df: pd.to_datetime(pd.to_datetime(df["Timestamp"]).dt.date)
-    )
-    .set_index("Timestamp")
-)
-_time_spacing = station_info_nz_precip["ts_spacing"].values[0]
-df_nz_precip.to_csv(
-    PRECIPITATION_RAW_DIR
-    / f"precipitation_{STATION_ID_NEDERZWALM}_{TIMESPACING_DICT[_time_spacing]}.csv"
-)
-station_info_nz_precip.to_csv(
-    PRECIPITATION_RAW_DIR
-    / f"precipitation_meta_{STATION_ID_NEDERZWALM}_{TIMESPACING_DICT[_time_spacing]}.csv",
-    index=False,
+df_nz_precip = _download_daily_timeseries(station_info_nz_precip)
+_write_timeseries(
+    df_nz_precip,
+    station_info_nz_precip,
+    PRECIPITATION_RAW_DIR,
+    PRECIP_CATCHMENT_LONGNAME,
+    STATION_ID_NEDERZWALM,
 )
 
 ## Discharge
 station_info_nz_discharge = station_info_nz.query(
-    "stationparameter_longname == 'River Discharge' and ts_shortname == 'Day.Mean'"
+    f"stationparameter_longname == '{DISCHARGE_LONGNAME}'"
+    f" and ts_shortname == '{DAILY_AGG}.{MEAN_AGG}'"
 )
-ts_id_nz_discharge = station_info_nz_discharge["ts_id"].values[0]
-df_nz_discharge = (
-    vmm.get_timeseries_values(
-        ts_id=ts_id_nz_discharge,
-        start=station_info_nz_discharge["from"].dt.date.values[0],
-        end=station_info_nz_discharge["to"].dt.date.values[0],
-    )
-    .reset_index()
-    .assign(
-        Timestamp=lambda df: pd.to_datetime(pd.to_datetime(df["Timestamp"]).dt.date)
-    )
-    .set_index("Timestamp")
-)
-_time_spacing = station_info_nz_discharge["ts_spacing"].values[0]
-df_nz_discharge.to_csv(
-    DISCHARGE_RAW_DIR
-    / f"discharge_{STATION_ID_NEDERZWALM}_{TIMESPACING_DICT[_time_spacing]}.csv"
-)
-station_info_nz_discharge.to_csv(
-    DISCHARGE_RAW_DIR
-    / f"discharge_meta_{STATION_ID_NEDERZWALM}_{TIMESPACING_DICT[_time_spacing]}.csv",
-    index=False,
+df_nz_discharge = _download_daily_timeseries(station_info_nz_discharge)
+_write_timeseries(
+    df_nz_discharge,
+    station_info_nz_discharge,
+    DISCHARGE_RAW_DIR,
+    DISCHARGE_LONGNAME,
+    STATION_ID_NEDERZWALM,
 )
 
 # %% Maarke-Kerkem (P06_014)
 station_info_mk = _parse_date_columns(vmm.get_timeseries_list(STATION_ID_MAARKE_KERKEM))
 station_info_mk_precip = station_info_mk.query(
-    "stationparameter_longname == 'Precipitation' and ts_shortname == 'Day.Total'"
+    f"stationparameter_longname == '{PRECIPITATION_LONGNAME}'"
+    f" and ts_shortname == '{DAILY_AGG}.{TOTAL_AGG}'"
 )
-ts_id_mk_precip = station_info_mk_precip["ts_id"].values[0]
-df_mk_precip = (
-    vmm.get_timeseries_values(
-        ts_id=ts_id_mk_precip,
-        start=station_info_mk_precip["from"].dt.date.values[0],
-        end=station_info_mk_precip["to"].dt.date.values[0],
-    )
-    .reset_index()
-    .assign(
-        Timestamp=lambda df: pd.to_datetime(pd.to_datetime(df["Timestamp"]).dt.date)
-    )
-    .set_index("Timestamp")
-)
-_time_spacing = station_info_mk_precip["ts_spacing"].values[0]
-df_mk_precip.to_csv(
-    PRECIPITATION_RAW_DIR
-    / f"precipitation_{STATION_ID_MAARKE_KERKEM}_{TIMESPACING_DICT[_time_spacing]}.csv"
-)
-station_info_mk_precip.to_csv(
-    PRECIPITATION_RAW_DIR
-    / f"precipitation_meta_{STATION_ID_MAARKE_KERKEM}_{TIMESPACING_DICT[_time_spacing]}.csv",
-    index=False,
+df_mk_precip = _download_daily_timeseries(station_info_mk_precip)
+_write_timeseries(
+    df_mk_precip,
+    station_info_mk_precip,
+    PRECIPITATION_RAW_DIR,
+    PRECIPITATION_LONGNAME,
+    STATION_ID_MAARKE_KERKEM,
 )
 
 # %% Waregem (ME05_019)
@@ -123,32 +126,13 @@ station_info_waregem = _parse_date_columns(vmm.get_timeseries_list(STATION_ID_WA
 station_info_waregem_potential_evapotranspiration = station_info_waregem.query(
     "stationparameter_longname == 'Potential Evapotranspiration' and ts_shortname == 'Day.Total.Penman'"
 )
-ts_id_waregem_pet = station_info_waregem_potential_evapotranspiration["ts_id"].values[0]
-df_waregem_pet = (
-    vmm.get_timeseries_values(
-        ts_id=ts_id_waregem_pet,
-        start=station_info_waregem_potential_evapotranspiration["from"].dt.date.values[
-            0
-        ],
-        end=station_info_waregem_potential_evapotranspiration["to"].dt.date.values[0],
-    )
-    .reset_index()
-    .assign(
-        Timestamp=lambda df: pd.to_datetime(pd.to_datetime(df["Timestamp"]).dt.date)
-    )
-    .set_index("Timestamp")
+df_waregem_pet = _download_daily_timeseries(
+    station_info_waregem_potential_evapotranspiration
 )
-_time_spacing = station_info_waregem_potential_evapotranspiration["ts_spacing"].values[
-    0
-]
-df_waregem_pet.to_csv(
-    POTENTIAL_EVAPOTRANSPIRATION_RAW_DIR
-    / f"potential_evapotranspiration_{STATION_ID_WAREGEM}_{TIMESPACING_DICT[_time_spacing]}.csv"
+_write_timeseries(
+    df_waregem_pet,
+    station_info_waregem_potential_evapotranspiration,
+    POTENTIAL_EVAPOTRANSPIRATION_RAW_DIR,
+    POTENTIAL_EVAPOTRANSPIRATION_LONGNAME,
+    STATION_ID_WAREGEM,
 )
-station_info_waregem_potential_evapotranspiration.to_csv(
-    POTENTIAL_EVAPOTRANSPIRATION_RAW_DIR
-    / f"potential_evapotranspiration_meta_{STATION_ID_WAREGEM}_{TIMESPACING_DICT[_time_spacing]}.csv",
-    index=False,
-)
-
-# %%
