@@ -1,12 +1,12 @@
+# %% Imports
 import pandas as pd
 from conf import END_YEAR, START_YEAR, STATION_ID_MAARKE_KERKEM, STATION_ID_NEDERZWALM
 from pywaterinfo import Waterinfo
 
 vmm = Waterinfo("vmm", cache=True)
-station_info_mk = vmm.get_timeseries_list(STATION_ID_MAARKE_KERKEM)
-station_info_nz = vmm.get_timeseries_list(STATION_ID_NEDERZWALM)
 
-#
+# %% Nederzwalm/Zwalmbeek (L06_342)
+station_info_nz = vmm.get_timeseries_list(STATION_ID_NEDERZWALM)
 station_info_nz_precip = station_info_nz.query(
     "stationparameter_longname == 'Precipitation of catchment' and ts_name == 'Rro.DagTot'"
 )
@@ -31,3 +31,6 @@ df_nz_precip = (
     )
     .set_index("Timestamp")
 )
+
+# %% Maarke-Kerkem (P06_014)
+station_info_mk = vmm.get_timeseries_list(STATION_ID_MAARKE_KERKEM)

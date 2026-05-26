@@ -6,23 +6,23 @@ import rioxarray
 from conf import (
     CRS,
     DATASET_DTM,
+    DTM_RAW_DIR,
     NO_DATA_VALUE_DTM,
     WCS_ENDPOINT_DTM,
     XMAX,
     XMIN,
     YMAX,
     YMIN,
-    dtm_raw_dir,
 )
 from owslib.wcs import WebCoverageService
 from rioxarray.merge import merge_arrays
 
-dtm_raw_dir.mkdir(parents=True, exist_ok=True)
+DTM_RAW_DIR.mkdir(parents=True, exist_ok=True)
 
 # Full metadata at https://metadata.vlaanderen.be/srv/dut/catalog.search#/metadata/f52b1a13-86bc-4b64-8256-88cc0d1a8735
 wcs = WebCoverageService(WCS_ENDPOINT_DTM, version="2.0.1")
 FORMAT = wcs.contents[DATASET_DTM].supportedFormats[-1]
-output_file = dtm_raw_dir / f"{DATASET_DTM}.tif"
+output_file = DTM_RAW_DIR / f"{DATASET_DTM}.tif"
 
 # Note: extent too large for a single request, so we split it into tiles and merge later
 step = 2_000  # m
@@ -77,7 +77,7 @@ for i in range(len(x_edges) - 1):
         xmin, xmax = x_edges[i].item(), x_edges[i + 1].item()
         ymin, ymax = y_edges[j].item(), y_edges[j + 1].item()
 
-        tile_file = dtm_raw_dir / f"tile_{i}_{j}.tif"
+        tile_file = DTM_RAW_DIR / f"tile_{i}_{j}.tif"
         download_wcs_subset(wcs, xmin, xmax, ymin, ymax, tile_file)
         tile_files.append(tile_file)
 
