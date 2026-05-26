@@ -15,7 +15,7 @@ Download file: [`waterinfo_download.py`](waterinfo_download.py)
 
 [Waterinfo](https://www.waterinfo.vlaanderen.be/) is primary Flemish source of hydrological data. For this exercise, all data is at a daily temporal resolution. Programmatic access is carried out using [pywaterinfo](https://github.com/fluves/pywaterinfo). Following variables are downloaded:
 
-- Discharge: Daily average discharge [$\text{m}^3$/s] measured at Nederzwalm/Zwalmbeek (L06_342)
+- Discharge: Daily average discharge [$`\text{m}^3`$/s] measured at Nederzwalm/Zwalmbeek (L06_342)
 - Precipitation: Daily total precipitation [mm] 
     - Catchment rainfall (merging radar + pluviograph) for L06_342
     - Pluviograph rainfall from Maarke-Kerkem (P06_014)
