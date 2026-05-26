@@ -7,6 +7,7 @@ from conf import (
     MEAN_AGG,
     POTENTIAL_EVAPOTRANSPIRATION_LONGNAME,
     POTENTIAL_EVAPOTRANSPIRATION_RAW_DIR,
+    POTENTIAL_EVAPOTRANSPIRATION_SUFFIX,
     PRECIP_CATCHMENT_LONGNAME,
     PRECIP_CATCHMENT_SUFFIX,
     PRECIPITATION_LONGNAME,
@@ -124,7 +125,8 @@ _write_timeseries(
 # %% Waregem (ME05_019)
 station_info_waregem = _parse_date_columns(vmm.get_timeseries_list(STATION_ID_WAREGEM))
 station_info_waregem_potential_evapotranspiration = station_info_waregem.query(
-    "stationparameter_longname == 'Potential Evapotranspiration' and ts_shortname == 'Day.Total.Penman'"
+    f"stationparameter_longname == '{POTENTIAL_EVAPOTRANSPIRATION_LONGNAME}'"
+    f" and ts_shortname == '{DAILY_AGG}.{TOTAL_AGG}.{POTENTIAL_EVAPOTRANSPIRATION_SUFFIX}'"
 )
 df_waregem_pet = _download_daily_timeseries(
     station_info_waregem_potential_evapotranspiration
