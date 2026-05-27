@@ -8,30 +8,36 @@ from conf import (
     DATASET_AFSTROOMGEBIED,
     EPSG_LAMBERT_72,
     WFS_ENDPOINT_AFSTROOMGEBIED,
+    logger,
 )
-from loguru import logger
 from owslib.wfs import WebFeatureService
 
-AFSTROOMGEBIED_RAW_DIR.mkdir(parents=True, exist_ok=True)
-# %% Download Afstroomgebied data using WFS
-logger.info(
-    f"Downloading {DATASET_AFSTROOMGEBIED} via WFS from {WFS_ENDPOINT_AFSTROOMGEBIED}"
-)
-wfs = WebFeatureService(WFS_ENDPOINT_AFSTROOMGEBIED, version="2.0.0")
-wfs.contents[DATASET_AFSTROOMGEBIED]
-crs_string = [
-    crs
-    for crs in wfs.contents[DATASET_AFSTROOMGEBIED].crsOptions
-    if str(EPSG_LAMBERT_72) in str(crs)
-][0]
-response = wfs.getfeature(
-    typename=DATASET_AFSTROOMGEBIED,
-    bbox=BBOX,
-    outputFormat="json",
-    srsname=crs_string,
-)
-data_afstroomgebied = json.loads(response.read())
-gdf_afstroomgebied = gpd.GeoDataFrame.from_features(
-    data_afstroomgebied["features"], crs=EPSG_LAMBERT_72
-)
-gdf_afstroomgebied.to_file(AFSTROOMGEBIED_RAW_DIR / "afstroomgebied.shp")
+
+def main():
+    AFSTROOMGEBIED_RAW_DIR.mkdir(parents=True, exist_ok=True)
+    # %% Download Afstroomgebied data using WFS
+    logger.info(
+        f"Downloading {DATASET_AFSTROOMGEBIED} via WFS from {WFS_ENDPOINT_AFSTROOMGEBIED}"
+    )
+    wfs = WebFeatureService(WFS_ENDPOINT_AFSTROOMGEBIED, version="2.0.0")
+    wfs.contents[DATASET_AFSTROOMGEBIED]
+    crs_string = [
+        crs
+        for crs in wfs.contents[DATASET_AFSTROOMGEBIED].crsOptions
+        if str(EPSG_LAMBERT_72) in str(crs)
+    ][0]
+    response = wfs.getfeature(
+        typename=DATASET_AFSTROOMGEBIED,
+        bbox=BBOX,
+        outputFormat="json",
+        srsname=crs_string,
+    )
+    data_afstroomgebied = json.loads(response.read())
+    gdf_afstroomgebied = gpd.GeoDataFrame.from_features(
+        data_afstroomgebied["features"], crs=EPSG_LAMBERT_72
+    )
+    gdf_afstroomgebied.to_file(AFSTROOMGEBIED_RAW_DIR / "afstroomgebied.shp")
+
+
+if __name__ == "__main__":
+    main()

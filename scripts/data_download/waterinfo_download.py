@@ -17,14 +17,9 @@ from conf import (
     STATION_ID_WAREGEM,
     TIMESPACING_DICT,
     TOTAL_AGG,
+    logger,
 )
-from loguru import logger
 from pywaterinfo import Waterinfo
-
-PRECIPITATION_RAW_DIR.mkdir(parents=True, exist_ok=True)
-DISCHARGE_RAW_DIR.mkdir(parents=True, exist_ok=True)
-POTENTIAL_EVAPOTRANSPIRATION_RAW_DIR.mkdir(parents=True, exist_ok=True)
-vmm = Waterinfo("vmm", cache=True)
 
 
 # %% Helper functions
@@ -39,7 +34,7 @@ def _parse_date_columns(
     return df
 
 
-def _download_daily_timeseries(station_info: pd.DataFrame) -> pd.DataFrame:
+def _download_daily_timeseries(vmm, station_info: pd.DataFrame) -> pd.DataFrame:
     """Download full daily timeseries for a filtered station_info DataFrame with exactly 1 entry."""
     if len(station_info) != 1:
         raise ValueError(
@@ -77,76 +72,92 @@ def _write_timeseries(
     )
 
 
-logger.info("Starting downloads from pywaterinfo")
-# %% Nederzwalm/Zwalmbeek (L06_342)
-station_info_nz = _parse_date_columns(vmm.get_timeseries_list(STATION_ID_NEDERZWALM))
+def main():
+    PRECIPITATION_RAW_DIR.mkdir(parents=True, exist_ok=True)
+    DISCHARGE_RAW_DIR.mkdir(parents=True, exist_ok=True)
+    POTENTIAL_EVAPOTRANSPIRATION_RAW_DIR.mkdir(parents=True, exist_ok=True)
+    vmm = Waterinfo("vmm", cache=True)
 
-## Catchment precipitation
-logger.info(
-    f"Downloading {PRECIPITATION_CATCHMENT_LONGNAME} for station {STATION_ID_NEDERZWALM}"
-)
-station_info_nz_precip = station_info_nz.query(
-    f"stationparameter_longname == '{PRECIPITATION_CATCHMENT_LONGNAME}'"
-    f" and ts_shortname == '{DAILY_AGG}.{TOTAL_AGG}.{PRECIPITATION_CATCHMENT_SUFFIX}'"
-)
-df_nz_precip = _download_daily_timeseries(station_info_nz_precip)
-_write_timeseries(
-    df_nz_precip,
-    station_info_nz_precip,
-    PRECIPITATION_RAW_DIR,
-    PRECIPITATION_CATCHMENT_LONGNAME,
-    STATION_ID_NEDERZWALM,
-)
+    logger.info("Starting downloads from pywaterinfo")
+    # %% Nederzwalm/Zwalmbeek (L06_342)
+    station_info_nz = _parse_date_columns(
+        vmm.get_timeseries_list(STATION_ID_NEDERZWALM)
+    )
 
-## Discharge
-logger.info(f"Downloading {DISCHARGE_LONGNAME} for station {STATION_ID_NEDERZWALM}")
-station_info_nz_discharge = station_info_nz.query(
-    f"stationparameter_longname == '{DISCHARGE_LONGNAME}'"
-    f" and ts_shortname == '{DAILY_AGG}.{MEAN_AGG}'"
-)
-df_nz_discharge = _download_daily_timeseries(station_info_nz_discharge)
-_write_timeseries(
-    df_nz_discharge,
-    station_info_nz_discharge,
-    DISCHARGE_RAW_DIR,
-    DISCHARGE_LONGNAME,
-    STATION_ID_NEDERZWALM,
-)
+    ## Catchment precipitation
+    logger.info(
+        f"Downloading {PRECIPITATION_CATCHMENT_LONGNAME} for station {STATION_ID_NEDERZWALM}"
+    )
+    station_info_nz_precip = station_info_nz.query(
+        f"stationparameter_longname == '{PRECIPITATION_CATCHMENT_LONGNAME}'"
+        f" and ts_shortname == '{DAILY_AGG}.{TOTAL_AGG}.{PRECIPITATION_CATCHMENT_SUFFIX}'"
+    )
+    df_nz_precip = _download_daily_timeseries(vmm, station_info_nz_precip)
+    _write_timeseries(
+        df_nz_precip,
+        station_info_nz_precip,
+        PRECIPITATION_RAW_DIR,
+        PRECIPITATION_CATCHMENT_LONGNAME,
+        STATION_ID_NEDERZWALM,
+    )
 
-# %% Maarke-Kerkem (P06_014)
-logger.info(
-    f"Downloading {PRECIPITATION_LONGNAME} for station {STATION_ID_MAARKE_KERKEM}"
-)
-station_info_mk = _parse_date_columns(vmm.get_timeseries_list(STATION_ID_MAARKE_KERKEM))
-station_info_mk_precip = station_info_mk.query(
-    f"stationparameter_longname == '{PRECIPITATION_LONGNAME}'"
-    f" and ts_shortname == '{DAILY_AGG}.{TOTAL_AGG}'"
-)
-df_mk_precip = _download_daily_timeseries(station_info_mk_precip)
-_write_timeseries(
-    df_mk_precip,
-    station_info_mk_precip,
-    PRECIPITATION_RAW_DIR,
-    PRECIPITATION_LONGNAME,
-    STATION_ID_MAARKE_KERKEM,
-)
+    ## Discharge
+    logger.info(f"Downloading {DISCHARGE_LONGNAME} for station {STATION_ID_NEDERZWALM}")
+    station_info_nz_discharge = station_info_nz.query(
+        f"stationparameter_longname == '{DISCHARGE_LONGNAME}'"
+        f" and ts_shortname == '{DAILY_AGG}.{MEAN_AGG}'"
+    )
+    df_nz_discharge = _download_daily_timeseries(vmm, station_info_nz_discharge)
+    _write_timeseries(
+        df_nz_discharge,
+        station_info_nz_discharge,
+        DISCHARGE_RAW_DIR,
+        DISCHARGE_LONGNAME,
+        STATION_ID_NEDERZWALM,
+    )
 
-# %% Waregem (ME05_019)
-logger.info(
-    f"Downloading {POTENTIAL_EVAPOTRANSPIRATION_LONGNAME} for station {STATION_ID_WAREGEM}"
-)
-station_info_waregem = _parse_date_columns(vmm.get_timeseries_list(STATION_ID_WAREGEM))
-station_info_waregem_potential_evapotranspiration = station_info_waregem.query(
-    f"stationparameter_longname == '{POTENTIAL_EVAPOTRANSPIRATION_LONGNAME}'"
-    f" and ts_shortname == '{DAILY_AGG}.{TOTAL_AGG}.{POTENTIAL_EVAPOTRANSPIRATION_SUFFIX}'"
-)
-df_waregem_pet = _download_daily_timeseries(
-    station_info_waregem_potential_evapotranspiration
-)
-_write_timeseries(
-    df_waregem_pet,
-    station_info_waregem_potential_evapotranspiration,
-    POTENTIAL_EVAPOTRANSPIRATION_RAW_DIR,
-    POTENTIAL_EVAPOTRANSPIRATION_LONGNAME,
-    STATION_ID_WAREGEM,
-)
+    # %% Maarke-Kerkem (P06_014)
+    logger.info(
+        f"Downloading {PRECIPITATION_LONGNAME} for station {STATION_ID_MAARKE_KERKEM}"
+    )
+    station_info_mk = _parse_date_columns(
+        vmm.get_timeseries_list(STATION_ID_MAARKE_KERKEM)
+    )
+    station_info_mk_precip = station_info_mk.query(
+        f"stationparameter_longname == '{PRECIPITATION_LONGNAME}'"
+        f" and ts_shortname == '{DAILY_AGG}.{TOTAL_AGG}'"
+    )
+    df_mk_precip = _download_daily_timeseries(vmm, station_info_mk_precip)
+    _write_timeseries(
+        df_mk_precip,
+        station_info_mk_precip,
+        PRECIPITATION_RAW_DIR,
+        PRECIPITATION_LONGNAME,
+        STATION_ID_MAARKE_KERKEM,
+    )
+
+    # %% Waregem (ME05_019)
+    logger.info(
+        f"Downloading {POTENTIAL_EVAPOTRANSPIRATION_LONGNAME} for station {STATION_ID_WAREGEM}"
+    )
+    station_info_waregem = _parse_date_columns(
+        vmm.get_timeseries_list(STATION_ID_WAREGEM)
+    )
+    station_info_waregem_potential_evapotranspiration = station_info_waregem.query(
+        f"stationparameter_longname == '{POTENTIAL_EVAPOTRANSPIRATION_LONGNAME}'"
+        f" and ts_shortname == '{DAILY_AGG}.{TOTAL_AGG}.{POTENTIAL_EVAPOTRANSPIRATION_SUFFIX}'"
+    )
+    df_waregem_pet = _download_daily_timeseries(
+        vmm, station_info_waregem_potential_evapotranspiration
+    )
+    _write_timeseries(
+        df_waregem_pet,
+        station_info_waregem_potential_evapotranspiration,
+        POTENTIAL_EVAPOTRANSPIRATION_RAW_DIR,
+        POTENTIAL_EVAPOTRANSPIRATION_LONGNAME,
+        STATION_ID_WAREGEM,
+    )
+
+
+if __name__ == "__main__":
+    main()

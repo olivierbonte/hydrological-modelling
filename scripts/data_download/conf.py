@@ -1,8 +1,20 @@
+import sys
+
 import rootutils
+from loguru import logger
+
+LOG_FORMAT = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> - <level>{level}</level> - <blue>{file.name}:{line}</blue> - <white>{message}</white>"
+
+logger.remove()
+logger.add(
+    sys.stderr,
+    format=LOG_FORMAT,
+    colorize=True,
+)
 
 # General paths
-root_path = rootutils.find_root(search_from=__file__, indicator=".git")
-DATA_DIR = root_path / "data"
+ROOT_PATH = rootutils.find_root(search_from=__file__, indicator=".git")
+DATA_DIR = ROOT_PATH / "data"
 RAW_DATA_DIR = DATA_DIR / "raw"
 DTM_RAW_DIR = RAW_DATA_DIR / "digital_terrain_model"
 PRECIPITATION_RAW_DIR = RAW_DATA_DIR / "precipitation"
