@@ -31,6 +31,7 @@ XMIN, XMAX, YMIN, YMAX = 98_000, 116_000, 160_000, 180_000  # extent in m (EPSG:
 NO_DATA_VALUE_DTM = -9999.0
 WCS_ENDPOINT_DTM = "https://geo.api.vlaanderen.be/dhmv/wcs"
 EPSG_LAMBERT_72 = 31370
+TILE_SIZE = 2000  # in meters, one side of the requested tile
 
 # Vlaamse Hydrografishe Atlas (VHA)
 WFS_ENDPOINT_VHA = "https://geo.api.vlaanderen.be/VHAWaterlopen/wfs"

@@ -8,6 +8,7 @@ from conf import (
     DATASET_DTM,
     DTM_RAW_DIR,
     NO_DATA_VALUE_DTM,
+    TILE_SIZE,
     WCS_ENDPOINT_DTM,
     XMAX,
     XMIN,
@@ -17,11 +18,6 @@ from conf import (
 )
 from owslib.wcs import WebCoverageService
 from rioxarray.merge import merge_arrays
-
-# Note: extent too large for a single request, so we split it into tiles and merge later
-step = 2_000  # m
-x_edges = np.arange(XMIN, XMAX + step, step)
-y_edges = np.arange(YMIN, YMAX + step, step)
 
 
 # Define function to download a subset of the coverage using WCS GetCoverage request
@@ -74,7 +70,10 @@ def main():
     FORMAT = wcs.contents[DATASET_DTM].supportedFormats[-1]
     output_file = DTM_RAW_DIR / f"{DATASET_DTM}.tif"
 
+    # Note: extent too large for a single request, so we split it into tiles and merge later
     tile_files = []
+    x_edges = np.arange(XMIN, XMAX + TILE_SIZE, TILE_SIZE)
+    y_edges = np.arange(YMIN, YMAX + TILE_SIZE, TILE_SIZE)
 
     logger.info("Starting DTM download in tiles")
     for i in range(len(x_edges) - 1):
