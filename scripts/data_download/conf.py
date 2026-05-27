@@ -4,17 +4,10 @@ import rootutils
 root_path = rootutils.find_root(search_from=__file__, indicator=".git")
 DATA_DIR = root_path / "data"
 RAW_DATA_DIR = DATA_DIR / "raw"
-PROCESSED_DATA_DIR = DATA_DIR / "processed"
 DTM_RAW_DIR = RAW_DATA_DIR / "digital_terrain_model"
-DTM_PROCESSED_DIR = PROCESSED_DATA_DIR / "digital_terrain_model"
 PRECIPITATION_RAW_DIR = RAW_DATA_DIR / "precipitation"
-PRECIPITATION_PROCESSED_DIR = PROCESSED_DATA_DIR / "precipitation"
 DISCHARGE_RAW_DIR = RAW_DATA_DIR / "discharge"
-DISCHARGE_PROCESSED_DIR = PROCESSED_DATA_DIR / "discharge"
 POTENTIAL_EVAPOTRANSPIRATION_RAW_DIR = RAW_DATA_DIR / "potential_evapotranspiration"
-POTENTIAL_EVAPOTRANSPIRATION_PROCESSED_DIR = (
-    PROCESSED_DATA_DIR / "potential_evapotranspiration"
-)
 VLAAMSE_HYDROGRAFISCHE_ATLAS_RAW_DIR = RAW_DATA_DIR / "vlaamse_hydrografische_atlas"
 AFSTROOMGEBIED_RAW_DIR = RAW_DATA_DIR / "afstroomgebied"
 
@@ -56,7 +49,6 @@ POTENTIAL_EVAPOTRANSPIRATION_SUFFIX = "Penman"
 
 # Discharge station info
 STATION_ID_NEDERZWALM = "L06_342"
-PRECIP_CATCHMENT_LONGNAME = "Precipitation of catchment"
-PRECIP_CATCHMENT_TS_NAME = "Rro.DagTot"
-PRECIP_CATCHMENT_SUFFIX = "(rro)"
+PRECIPITATION_CATCHMENT_LONGNAME = "Precipitation of catchment"
+PRECIPITATION_CATCHMENT_SUFFIX = "(rro)"
 DISCHARGE_LONGNAME = "River Discharge"

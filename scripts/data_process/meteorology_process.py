@@ -1,17 +1,27 @@
 # %% Imports
 import pandas as pd
 from conf import (
+    DISCHARGE_LONGNAME,
     DISCHARGE_RAW_DIR,
     EP_MINIMUM,
     EP_TRESHOLD,
+    FILENAME_FORCINGS_DISCHARGE,
+    FILENAME_FORCINGS_DISCHARGE_META,
+    FORCINGS_DISCHARGE_PROCESSED_DIR,
+    METADATA_MAP,
+    POTENTIAL_EVAPOTRANSPIRATION_LONGNAME,
     POTENTIAL_EVAPOTRANSPIRATION_RAW_DIR,
+    PRECIPITATION_CATCHMENT_LONGNAME,
+    PRECIPITATION_LONGNAME,
     PRECIPITATION_RAW_DIR,
     STATION_ID_MAARKE_KERKEM,
     STATION_ID_NEDERZWALM,
     STATION_ID_WAREGEM,
+    WINDOW_SIZE_CLIMATOLOGY,
 )
 from loguru import logger
 
+FORCINGS_DISCHARGE_PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 logger.info("Processing meteorological and discharge data")
 
 
@@ -35,39 +45,39 @@ def get_complete_years(df: pd.DataFrame):
 
 
 # %% Read in data
-logger.info("Reading raw data from CSV files")
-df_nz_p = pd.read_csv(
-    PRECIPITATION_RAW_DIR
-    / f"precipitation_of_catchment_{STATION_ID_NEDERZWALM}_daily.csv",
-    index_col=0,
-    parse_dates=True,
-)
-df_mk_p = pd.read_csv(
-    PRECIPITATION_RAW_DIR / f"precipitation_{STATION_ID_MAARKE_KERKEM}_daily.csv",
-    index_col=0,
-    parse_dates=True,
-)
-df_wa_ep = pd.read_csv(
-    POTENTIAL_EVAPOTRANSPIRATION_RAW_DIR
-    / f"potential_evapotranspiration_{STATION_ID_WAREGEM}_daily.csv",
-    index_col=0,
-    parse_dates=True,
-)
-df_nz_discharge = pd.read_csv(
-    DISCHARGE_RAW_DIR / f"discharge_{STATION_ID_NEDERZWALM}_daily.csv",
-    index_col=0,
-    parse_dates=True,
-)
+logger.info("Reading raw and meta data from CSV files")
+df_dict = {}
+df_meta_dict = {}
+dict_map_name_to_dir = {
+    PRECIPITATION_LONGNAME: PRECIPITATION_RAW_DIR,
+    PRECIPITATION_CATCHMENT_LONGNAME: PRECIPITATION_RAW_DIR,
+    POTENTIAL_EVAPOTRANSPIRATION_LONGNAME: POTENTIAL_EVAPOTRANSPIRATION_RAW_DIR,
+    DISCHARGE_LONGNAME: DISCHARGE_RAW_DIR,
+}
+dict_map_name_to_station_id = {
+    PRECIPITATION_LONGNAME: STATION_ID_MAARKE_KERKEM,
+    PRECIPITATION_CATCHMENT_LONGNAME: STATION_ID_NEDERZWALM,
+    POTENTIAL_EVAPOTRANSPIRATION_LONGNAME: STATION_ID_WAREGEM,
+    DISCHARGE_LONGNAME: STATION_ID_NEDERZWALM,
+}
+for name, directory in dict_map_name_to_dir.items():
+    station_id_ = dict_map_name_to_station_id.get(name)
+    if not station_id_:
+        logger.warning(f"No station ID found for {name}")
+        continue
+    name_ = name.replace(" ", "_").lower()
+    df_ = pd.read_csv(
+        directory / f"{name_}_{station_id_}_daily.csv",
+        index_col=0,
+        parse_dates=True,
+    )
+    df_meta_ = pd.read_csv(directory / f"{name_}_meta_{station_id_}_daily.csv")
+    df_dict[name] = df_
+    df_meta_dict[name] = df_meta_
 
 
 # %% Find date ranges and overlapping periods
 logger.info("Finding overlapping periods with full years of data across all variables")
-df_dict = {
-    "Precipitation": df_nz_p,
-    "Catchment Precipitation": df_mk_p,
-    "Potential Evapotranspiration": df_wa_ep,
-    "Discharge": df_nz_discharge,
-}
 
 first_years = []
 last_years = []
@@ -92,7 +102,7 @@ else:
     logger.error(msg)
     raise ValueError(msg)
 
-# %% Filter to overlapping period and fill missing days
+# %% Filter to overlapping period and fill missing days with NaNs
 # Create daily date range spanning the full, complete years
 logger.info("Filtering data to overlapping period and filling missing days with NaNs")
 date_range = pd.date_range(
@@ -106,49 +116,47 @@ for name, df in df_dict.items():
 
 # %% Precipitation: gap fill missing values in catchment precipitation with station precipitation
 logger.info(
-    "Filling missing values in catchment precipitation with station precipitation"
+    f"Filling missing values in {PRECIPITATION_CATCHMENT_LONGNAME} with station precipitation"
 )
 logger.info(
-    f"Number of missing values in catchment precipitation before filling: "
-    f"{df_dict['Catchment Precipitation']['Value'].isna().sum()}"
+    f"Number of missing values in {PRECIPITATION_CATCHMENT_LONGNAME} before filling: "
+    f"{df_dict[PRECIPITATION_CATCHMENT_LONGNAME]['Value'].isna().sum()}"
 )
-df_dict["Catchment Precipitation"] = df_dict["Catchment Precipitation"].fillna(
-    df_dict["Precipitation"]
-)
+df_dict[PRECIPITATION_CATCHMENT_LONGNAME] = df_dict[
+    PRECIPITATION_CATCHMENT_LONGNAME
+].fillna(df_dict[PRECIPITATION_LONGNAME])
 logger.info(
-    f"Number of missing values in catchment precipitation after filling: "
-    f"{df_dict['Catchment Precipitation']['Value'].isna().sum()}"
+    f"Number of missing values in {PRECIPITATION_CATCHMENT_LONGNAME} after filling: "
+    f"{df_dict[PRECIPITATION_CATCHMENT_LONGNAME]['Value'].isna().sum()}"
 )
 
 # %% Potential evpotranspiration
 ## Remove outliers
 logger.info("Removing outliers from potential evapotranspiration data")
 logger.info(f"Setting values below {EP_MINIMUM} to NaN")
-df_dict["Potential Evapotranspiration"]["Value"] = df_dict[
-    "Potential Evapotranspiration"
-]["Value"].where(df_dict["Potential Evapotranspiration"]["Value"] >= EP_MINIMUM)
+df_dict[POTENTIAL_EVAPOTRANSPIRATION_LONGNAME]["Value"] = df_dict[
+    POTENTIAL_EVAPOTRANSPIRATION_LONGNAME
+]["Value"].where(df_dict[POTENTIAL_EVAPOTRANSPIRATION_LONGNAME]["Value"] >= EP_MINIMUM)
 logger.info(f"Clipping remaining values below {EP_TRESHOLD} to {EP_TRESHOLD}")
-df_dict["Potential Evapotranspiration"]["Value"] = df_dict[
-    "Potential Evapotranspiration"
+df_dict[POTENTIAL_EVAPOTRANSPIRATION_LONGNAME]["Value"] = df_dict[
+    POTENTIAL_EVAPOTRANSPIRATION_LONGNAME
 ]["Value"].clip(lower=EP_TRESHOLD)
 
 ## Calculate smoothed climatology
-HALF_WINDOW_SIZE = 5
-WINDOW_SIZE = 2 * HALF_WINDOW_SIZE + 1
 logger.info(
-    f"Calculating smoothed climatology for potential evapotranspiration with window size: {WINDOW_SIZE}"
+    f"Calculating smoothed climatology for potential evapotranspiration with window size: {WINDOW_SIZE_CLIMATOLOGY}"
 )
 ep_climatology_daily = (
-    df_dict["Potential Evapotranspiration"]["Value"]
-    .groupby(df_dict["Potential Evapotranspiration"].index.dayofyear)
+    df_dict[POTENTIAL_EVAPOTRANSPIRATION_LONGNAME]["Value"]
+    .groupby(df_dict[POTENTIAL_EVAPOTRANSPIRATION_LONGNAME].index.dayofyear)
     .mean()
 )
 ep_climatology_daily_padded = ep_climatology_daily.to_xarray().pad(
-    index=WINDOW_SIZE // 2, mode="wrap"
+    index=WINDOW_SIZE_CLIMATOLOGY // 2, mode="wrap"
 )
 ep_climatology_daily_smoothed = (
     ep_climatology_daily_padded.rolling(
-        index=WINDOW_SIZE, center=True, min_periods=WINDOW_SIZE
+        index=WINDOW_SIZE_CLIMATOLOGY, center=True, min_periods=WINDOW_SIZE_CLIMATOLOGY
     )
     .mean()
     .dropna("index")
@@ -160,17 +168,55 @@ logger.info(
 )
 logger.info(
     f"Number of missing values in potential evapotranspiration before filling: "
-    f"{df_dict['Potential Evapotranspiration']['Value'].isna().sum()}"
+    f"{df_dict[POTENTIAL_EVAPOTRANSPIRATION_LONGNAME]['Value'].isna().sum()}"
 )
 # Convert the dayofyear Index to a Series so map returns a Series
 doy_series = pd.Series(
-    index=df_dict["Potential Evapotranspiration"].index,
-    data=df_dict["Potential Evapotranspiration"].index.dayofyear,
+    index=df_dict[POTENTIAL_EVAPOTRANSPIRATION_LONGNAME].index,
+    data=df_dict[POTENTIAL_EVAPOTRANSPIRATION_LONGNAME].index.dayofyear,
 )
 # Replace every doy value with the corresponding smoothed climatology value
 ep_climatology_matched = doy_series.map(ep_climatology_daily_smoothed)
 
-df_dict["Potential Evapotranspiration"]["Value"] = df_dict[
-    "Potential Evapotranspiration"
+df_dict[POTENTIAL_EVAPOTRANSPIRATION_LONGNAME]["Value"] = df_dict[
+    POTENTIAL_EVAPOTRANSPIRATION_LONGNAME
 ]["Value"].fillna(ep_climatology_matched)
+logger.info(
+    f"Number of missing values in {POTENTIAL_EVAPOTRANSPIRATION_LONGNAME} after filling: "
+    f"{df_dict[POTENTIAL_EVAPOTRANSPIRATION_LONGNAME]['Value'].isna().sum()}"
+)
+# %% Discharge
+nr_negative_values = (df_dict[DISCHARGE_LONGNAME]["Value"] < 0).sum()
+logger.info(
+    f"Number of below zero values in {DISCHARGE_LONGNAME}: {nr_negative_values}"
+)
+if nr_negative_values > 0:
+    logger.info("Setting below zero values in discharge to zero")
+    df_dict[DISCHARGE_LONGNAME]["Value"] = df_dict[DISCHARGE_LONGNAME]["Value"].clip(
+        lower=0
+    )
+logger.info(
+    f"Number of Nan values in {DISCHARGE_LONGNAME}: {df_dict[DISCHARGE_LONGNAME]['Value'].isna().sum()}. "
+    "Nan values are not filled in."
+)
+
+# %% Combine all variables into a single DataFrame
+logger.info("Saving all variables into a single DataFrame at")
+df_combined = pd.DataFrame(index=date_range)
+for name, df in df_dict.items():
+    if (
+        name != PRECIPITATION_CATCHMENT_LONGNAME
+    ):  # avoid duplicate info with station precipitation
+        name = name.replace(" ", "_").lower()
+        df_combined[name] = df["Value"]
+df_combined.to_csv(FORCINGS_DISCHARGE_PROCESSED_DIR / FILENAME_FORCINGS_DISCHARGE)
+# %% Combine and select metadata
+logger.info("Combining and selecting metadata for all variables")
+metadata_combined = {}
+for name, df_meta in df_meta_dict.items():
+    metadata_combined[name] = df_meta[METADATA_MAP.keys()].rename(columns=METADATA_MAP)
+df_combined_meta = pd.concat(metadata_combined, axis=0).reset_index(level=1, drop=True)
+df_combined_meta.to_csv(
+    FORCINGS_DISCHARGE_PROCESSED_DIR / FILENAME_FORCINGS_DISCHARGE_META
+)
 # %%

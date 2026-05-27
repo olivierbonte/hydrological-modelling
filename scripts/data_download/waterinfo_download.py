@@ -8,8 +8,8 @@ from conf import (
     POTENTIAL_EVAPOTRANSPIRATION_LONGNAME,
     POTENTIAL_EVAPOTRANSPIRATION_RAW_DIR,
     POTENTIAL_EVAPOTRANSPIRATION_SUFFIX,
-    PRECIP_CATCHMENT_LONGNAME,
-    PRECIP_CATCHMENT_SUFFIX,
+    PRECIPITATION_CATCHMENT_LONGNAME,
+    PRECIPITATION_CATCHMENT_SUFFIX,
     PRECIPITATION_LONGNAME,
     PRECIPITATION_RAW_DIR,
     STATION_ID_MAARKE_KERKEM,
@@ -83,18 +83,18 @@ station_info_nz = _parse_date_columns(vmm.get_timeseries_list(STATION_ID_NEDERZW
 
 ## Catchment precipitation
 logger.info(
-    f"Downloading {PRECIP_CATCHMENT_LONGNAME} for station {STATION_ID_NEDERZWALM}"
+    f"Downloading {PRECIPITATION_CATCHMENT_LONGNAME} for station {STATION_ID_NEDERZWALM}"
 )
 station_info_nz_precip = station_info_nz.query(
-    f"stationparameter_longname == '{PRECIP_CATCHMENT_LONGNAME}'"
-    f" and ts_shortname == '{DAILY_AGG}.{TOTAL_AGG}.{PRECIP_CATCHMENT_SUFFIX}'"
+    f"stationparameter_longname == '{PRECIPITATION_CATCHMENT_LONGNAME}'"
+    f" and ts_shortname == '{DAILY_AGG}.{TOTAL_AGG}.{PRECIPITATION_CATCHMENT_SUFFIX}'"
 )
 df_nz_precip = _download_daily_timeseries(station_info_nz_precip)
 _write_timeseries(
     df_nz_precip,
     station_info_nz_precip,
     PRECIPITATION_RAW_DIR,
-    PRECIP_CATCHMENT_LONGNAME,
+    PRECIPITATION_CATCHMENT_LONGNAME,
     STATION_ID_NEDERZWALM,
 )
 
