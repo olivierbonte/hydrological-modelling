@@ -1,5 +1,22 @@
-# Practical information 
+# Practical information
 
-## Working with Quarto
+Before diving into the exercises, some practical information is provided on how to effectively set up your working environment.
+
+## The repository
+
+All code used to create this assignment is available at [https://github.com/olivierbonte/hydrological-modelling](https://github.com/olivierbonte/hydrological-modelling). This collection of files is called a repository. To get started, go the the URL above, click on the green `Code` button and select `Download ZIP` (see @fig-screenshot-download-button). Unzip the downloaded file and place the resulting folder at a location of your choice. This folder contains all the files you need to complete the exercises.
+
+![Screenshot of GitHub download button](figures/screenshot_github_download.png){#fig-screenshot-download-button}
+
+The data needed is not included in the repository, and should be downloaded separately (see @sec-study-area for more information). 
+
+Note that this assignment is provided to you in two formats, up to you which one you prefer to work with:
+
+1. A website at [https://olivierbonte.github.io/hydrological-modelling/](https://olivierbonte.github.io/hydrological-modelling/)
+2. A PDF document, which you can download from [https://olivierbonte.github.io/hydrological-modelling/Exercises-Hydrological-Modelling.pdf](https://olivierbonte.github.io/hydrological-modelling/Exercises-Hydrological-Modelling.pdf)
+
+## Working with Quarto and Python 
+
+The idea of this exercise set is that you will use [Quarto](https://quarto.org/) to combine your code and your scientific report in a single document. 
 
 ## Evaluation 

@@ -43,10 +43,11 @@ format:
   pdf:
     documentclass: scrreprt
     include-in-header: preamble.tex
+    fig-pos: 'htb'
 
 # Allows caching of notebooks when previewing 
 execute:
-  cache: true
+  #cache: true
   freeze: auto
 
 editor:
