@@ -5,6 +5,7 @@ from conf import (
     DTM_RAW_DIR,
     DTM_SPATIAL_RESOLUTION,
     DTM_SPATIAL_RESOLUTION_UPSCALED,
+    FILENAME_DTM,
 )
 from loguru import logger
 
@@ -12,7 +13,7 @@ from loguru import logger
 def main():
     DTM_PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     logger.info(f"Processing DTM: {DATASET_DTM}")
-    da = rioxarray.open_rasterio(DTM_RAW_DIR / f"{DATASET_DTM}.tif")
+    da = rioxarray.open_rasterio(DTM_RAW_DIR / FILENAME_DTM)
     upscale_factor = DTM_SPATIAL_RESOLUTION_UPSCALED / DTM_SPATIAL_RESOLUTION
     if not upscale_factor.is_integer():
         msg = "Upscale factor must be an integer. Please check the spatial resolutions."

@@ -1,21 +1,27 @@
 # %% Imports
 import geopandas as gpd
-from conf import BBOX, CATCHMENT_INFO_PROCESSED_DIR, RAW_DATA_DIR
+from conf import (
+    AFSTROOMGEBIED_RAW_DIR,
+    BBOX,
+    CATCHMENT_INFO_PROCESSED_DIR,
+    FILENAME_AFSTROOMGEBIED,
+    FILENAME_VHA,
+    VLAAMSE_HYDROGRAFISCHE_ATLAS_RAW_DIR,
+)
 from loguru import logger
 from shapely.geometry import box
 
 
+# %%
 def main():
     CATCHMENT_INFO_PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     # %% Read in
-    gdf_afstroomgebied = gpd.read_file(
-        RAW_DATA_DIR / "afstroomgebied" / "afstroomgebied.shp"
-    )
-    gdf_vha = gpd.read_file(RAW_DATA_DIR / "vlaamse_hydrografische_atlas" / "VHA.shp")
+    gdf_afstroomgebied = gpd.read_file(AFSTROOMGEBIED_RAW_DIR / FILENAME_AFSTROOMGEBIED)
+    gdf_vha = gpd.read_file(VLAAMSE_HYDROGRAFISCHE_ATLAS_RAW_DIR / FILENAME_VHA)
 
     gdf_dict = {
-        "afstroomgebied": gdf_afstroomgebied,
-        "vlaamse_hydrografische_atlas": gdf_vha,
+        FILENAME_AFSTROOMGEBIED: gdf_afstroomgebied,
+        FILENAME_VHA: gdf_vha,
     }
     # %% Check if bbox of interest is contained in bbox of the data
     bbox_interest = box(*BBOX)
@@ -29,7 +35,7 @@ def main():
             logger.info(
                 f"The bounding box of the {name} data contains the bounding box of interest."
             )
-        out_path = CATCHMENT_INFO_PROCESSED_DIR / f"{name}.shp"
+        out_path = CATCHMENT_INFO_PROCESSED_DIR / name
         logger.info(f"Saving {name} data to {out_path}")
         gdf.to_file(out_path)
 

@@ -7,6 +7,8 @@ from conf import (
     EP_TRESHOLD,
     FILENAME_FORCINGS_DISCHARGE,
     FILENAME_FORCINGS_DISCHARGE_META,
+    FILENAME_WATERINFO_META_TEMPLATE,
+    FILENAME_WATERINFO_TEMPLATE,
     FORCINGS_DISCHARGE_PROCESSED_DIR,
     METADATA_MAP,
     POTENTIAL_EVAPOTRANSPIRATION_LONGNAME,
@@ -17,6 +19,7 @@ from conf import (
     STATION_ID_MAARKE_KERKEM,
     STATION_ID_NEDERZWALM,
     STATION_ID_WAREGEM,
+    TIMESPACING_DICT,
     WINDOW_SIZE_CLIMATOLOGY,
 )
 from loguru import logger
@@ -66,13 +69,23 @@ def main():
         if not station_id_:
             logger.warning(f"No station ID found for {name}")
             continue
+
         name_ = name.replace(" ", "_").lower()
+        time_spacing = TIMESPACING_DICT["P1D"]
+
+        data_filename = FILENAME_WATERINFO_TEMPLATE.format(
+            variable=name_, station_id=station_id_, time_spacing=time_spacing
+        )
+        meta_filename = FILENAME_WATERINFO_META_TEMPLATE.format(
+            variable=name_, station_id=station_id_, time_spacing=time_spacing
+        )
+
         df_ = pd.read_csv(
-            directory / f"{name_}_{station_id_}_daily.csv",
+            directory / data_filename,
             index_col=0,
             parse_dates=True,
         )
-        df_meta_ = pd.read_csv(directory / f"{name_}_meta_{station_id_}_daily.csv")
+        df_meta_ = pd.read_csv(directory / meta_filename)
         df_dict[name] = df_
         df_meta_dict[name] = df_meta_
 
