@@ -130,7 +130,7 @@ logger.info(
     f"{df_dict[PRECIPITATION_CATCHMENT_LONGNAME]['Value'].isna().sum()}"
 )
 
-# %% Potential evpotranspiration
+# %% Potential evapotranspiration
 ## Remove outliers
 logger.info("Removing outliers from potential evapotranspiration data")
 logger.info(f"Setting values below {EP_MINIMUM} to NaN")
@@ -201,7 +201,8 @@ logger.info(
 )
 
 # %% Combine all variables into a single DataFrame
-logger.info("Saving all variables into a single DataFrame at")
+out_path_ = FORCINGS_DISCHARGE_PROCESSED_DIR / FILENAME_FORCINGS_DISCHARGE
+logger.info(f"Saving all variables into a single dataset at {out_path_}")
 df_combined = pd.DataFrame(index=date_range)
 for name, df in df_dict.items():
     if (
@@ -209,14 +210,16 @@ for name, df in df_dict.items():
     ):  # avoid duplicate info with station precipitation
         name = name.replace(" ", "_").lower()
         df_combined[name] = df["Value"]
-df_combined.to_csv(FORCINGS_DISCHARGE_PROCESSED_DIR / FILENAME_FORCINGS_DISCHARGE)
+df_combined.to_csv(out_path_)
+
 # %% Combine and select metadata
-logger.info("Combining and selecting metadata for all variables")
+out_path_meta_ = FORCINGS_DISCHARGE_PROCESSED_DIR / FILENAME_FORCINGS_DISCHARGE_META
+logger.info(
+    f"Saving, combining and selecting metadata for all variables at {out_path_meta_}"
+)
 metadata_combined = {}
 for name, df_meta in df_meta_dict.items():
     metadata_combined[name] = df_meta[METADATA_MAP.keys()].rename(columns=METADATA_MAP)
 df_combined_meta = pd.concat(metadata_combined, axis=0).reset_index(level=1, drop=True)
-df_combined_meta.to_csv(
-    FORCINGS_DISCHARGE_PROCESSED_DIR / FILENAME_FORCINGS_DISCHARGE_META
-)
+df_combined_meta.to_csv(out_path_meta_)
 # %%
