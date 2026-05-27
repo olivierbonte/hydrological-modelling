@@ -9,10 +9,14 @@ from conf import (
     EPSG_LAMBERT_72,
     WFS_ENDPOINT_AFSTROOMGEBIED,
 )
+from loguru import logger
 from owslib.wfs import WebFeatureService
 
 AFSTROOMGEBIED_RAW_DIR.mkdir(parents=True, exist_ok=True)
 # %% Download Afstroomgebied data using WFS
+logger.info(
+    f"Downloading {DATASET_AFSTROOMGEBIED} via WFS from {WFS_ENDPOINT_AFSTROOMGEBIED}"
+)
 wfs = WebFeatureService(WFS_ENDPOINT_AFSTROOMGEBIED, version="2.0.0")
 wfs.contents[DATASET_AFSTROOMGEBIED]
 crs_string = [

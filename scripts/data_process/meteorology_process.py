@@ -10,6 +10,9 @@ from conf import (
     STATION_ID_NEDERZWALM,
     STATION_ID_WAREGEM,
 )
+from loguru import logger
+
+logger.info("Processing meteorological and discharge data")
 
 
 # %% Util functions
@@ -32,6 +35,7 @@ def get_complete_years(df: pd.DataFrame):
 
 
 # %% Read in data
+logger.info("Reading raw data from CSV files")
 df_nz_p = pd.read_csv(
     PRECIPITATION_RAW_DIR
     / f"precipitation_of_catchment_{STATION_ID_NEDERZWALM}_daily.csv",
@@ -57,6 +61,7 @@ df_nz_discharge = pd.read_csv(
 
 
 # %% Find date ranges and overlapping periods
+logger.info("Finding overlapping periods with full years of data across all variables")
 df_dict = {
     "Precipitation": df_nz_p,
     "Catchment Precipitation": df_mk_p,
@@ -68,8 +73,10 @@ first_years = []
 last_years = []
 for name, df in df_dict.items():
     start_date, end_date, first_year, last_year = get_complete_years(df)
-    print(f"  Start: {start_date.date()}, End: {end_date.date()}")
-    print(f"  First complete year: {first_year}, Last complete year: {last_year}")
+    logger.info(f"{name} Data - Start: {start_date.date()}, End: {end_date.date()}")
+    logger.info(
+        f"{name} Data - First complete year: {first_year}, Last complete year: {last_year}"
+    )
     first_years.append(first_year)
     last_years.append(last_year)
 
@@ -77,12 +84,17 @@ start_year = max(first_years)
 end_year = min(last_years)
 
 if start_year <= end_year:
-    print(f"Overlapping period with full years of data: {start_year} - {end_year}")
+    logger.info(
+        f"Overlapping period with full years of data: {start_year} - {end_year}"
+    )
 else:
-    raise ValueError("No overlapping period with full years of data.")
+    msg = "No overlapping period with full years of data across all variables."
+    logger.error(msg)
+    raise ValueError(msg)
 
 # %% Filter to overlapping period and fill missing days
 # Create daily date range spanning the full, complete years
+logger.info("Filtering data to overlapping period and filling missing days with NaNs")
 date_range = pd.date_range(
     start=f"{start_year}-01-01", end=f"{end_year}-12-31", freq="D"
 )
@@ -93,15 +105,29 @@ for name, df in df_dict.items():
     df_dict[name] = df_
 
 # %% Precipitation: gap fill missing values in catchment precipitation with station precipitation
+logger.info(
+    "Filling missing values in catchment precipitation with station precipitation"
+)
+logger.info(
+    f"Number of missing values in catchment precipitation before filling: "
+    f"{df_dict['Catchment Precipitation']['Value'].isna().sum()}"
+)
 df_dict["Catchment Precipitation"] = df_dict["Catchment Precipitation"].fillna(
     df_dict["Precipitation"]
+)
+logger.info(
+    f"Number of missing values in catchment precipitation after filling: "
+    f"{df_dict['Catchment Precipitation']['Value'].isna().sum()}"
 )
 
 # %% Potential evpotranspiration
 ## Remove outliers
+logger.info("Removing outliers from potential evapotranspiration data")
+logger.info(f"Setting values below {EP_MINIMUM} to NaN")
 df_dict["Potential Evapotranspiration"]["Value"] = df_dict[
     "Potential Evapotranspiration"
 ]["Value"].where(df_dict["Potential Evapotranspiration"]["Value"] >= EP_MINIMUM)
+logger.info(f"Clipping remaining values below {EP_TRESHOLD} to {EP_TRESHOLD}")
 df_dict["Potential Evapotranspiration"]["Value"] = df_dict[
     "Potential Evapotranspiration"
 ]["Value"].clip(lower=EP_TRESHOLD)
@@ -109,7 +135,9 @@ df_dict["Potential Evapotranspiration"]["Value"] = df_dict[
 ## Calculate smoothed climatology
 HALF_WINDOW_SIZE = 5
 WINDOW_SIZE = 2 * HALF_WINDOW_SIZE + 1
-
+logger.info(
+    f"Calculating smoothed climatology for potential evapotranspiration with window size: {WINDOW_SIZE}"
+)
 ep_climatology_daily = (
     df_dict["Potential Evapotranspiration"]["Value"]
     .groupby(df_dict["Potential Evapotranspiration"].index.dayofyear)
@@ -127,10 +155,17 @@ ep_climatology_daily_smoothed = (
 ).to_pandas()
 
 ## Fill missing values with smoothed climatology
+logger.info(
+    "Filling missing values in potential evapotranspiration with smoothed climatology"
+)
+logger.info(
+    f"Number of missing values in potential evapotranspiration before filling: "
+    f"{df_dict['Potential Evapotranspiration']['Value'].isna().sum()}"
+)
 # Convert the dayofyear Index to a Series so map returns a Series
 doy_series = pd.Series(
-    data=df_dict["Potential Evapotranspiration"].index.dayofyear,
     index=df_dict["Potential Evapotranspiration"].index,
+    data=df_dict["Potential Evapotranspiration"].index.dayofyear,
 )
 # Replace every doy value with the corresponding smoothed climatology value
 ep_climatology_matched = doy_series.map(ep_climatology_daily_smoothed)

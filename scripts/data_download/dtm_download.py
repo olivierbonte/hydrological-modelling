@@ -14,12 +14,14 @@ from conf import (
     YMAX,
     YMIN,
 )
+from loguru import logger
 from owslib.wcs import WebCoverageService
 from rioxarray.merge import merge_arrays
 
 DTM_RAW_DIR.mkdir(parents=True, exist_ok=True)
 
 # Full metadata at https://metadata.vlaanderen.be/srv/dut/catalog.search#/metadata/f52b1a13-86bc-4b64-8256-88cc0d1a8735
+logger.info(f"Downloading {DATASET_DTM} via WCS from {WCS_ENDPOINT_DTM}")
 wcs = WebCoverageService(WCS_ENDPOINT_DTM, version="2.0.1")
 FORMAT = wcs.contents[DATASET_DTM].supportedFormats[-1]
 output_file = DTM_RAW_DIR / f"{DATASET_DTM}.tif"
@@ -40,7 +42,7 @@ def download_wcs_subset(
     maxy: float,
     out_file: Path,
 ):
-    print(f"Downloading subset {minx:.1f}-{maxx:.1f}, {miny:.1f}-{maxy:.1f}...")
+    logger.info(f"Downloading subset {minx:.1f}-{maxx:.1f}, {miny:.1f}-{maxy:.1f}...")
     try:
         response = wcs.getCoverage(
             identifier=DATASET_DTM,
@@ -67,11 +69,11 @@ def download_wcs_subset(
 
         return True
     except Exception as e:
-        print(f"Failed to download subset: {e}")
+        logger.error(f"Failed to download subset: {e}")
         return False
 
 
-print("Starting DTM download in tiles")
+logger.info("Starting DTM download in tiles")
 for i in range(len(x_edges) - 1):
     for j in range(len(y_edges) - 1):
         xmin, xmax = x_edges[i].item(), x_edges[i + 1].item()
@@ -81,7 +83,7 @@ for i in range(len(x_edges) - 1):
         download_wcs_subset(wcs, xmin, xmax, ymin, ymax, tile_file)
         tile_files.append(tile_file)
 
-print(f"Downloaded {len(tile_files)} tiles. Merging into single DTM")
+logger.info(f"Downloaded {len(tile_files)} tiles. Merging into single DTM")
 
 elements = []
 for f in tile_files:
@@ -89,19 +91,19 @@ for f in tile_files:
         da = rioxarray.open_rasterio(f)
         elements.append(da)
     except Exception as e:
-        print(f"Could not open {f}: {e}")
+        logger.error(f"Could not open {f}: {e}")
 
 if elements:
     da_merged = merge_arrays(elements, nodata=NO_DATA_VALUE_DTM)
     da_merged.rio.to_raster(output_file)
-    print(f"Successfully merged DTM tiles into: {output_file}")
+    logger.info(f"Successfully merged DTM tiles into: {output_file}")
     da_merged.close()
 
     # Test if opening the merged file works
     ds = rioxarray.open_rasterio(output_file)
-    print(ds)
+    logger.info(f"Loaded merged raster dataset: {ds}")
 else:
-    print("No valid tiles to merge.")
+    logger.warning("No valid tiles to merge.")
 
 # Cleanup tile files
 for f in tile_files:

@@ -18,6 +18,7 @@ from conf import (
     TIMESPACING_DICT,
     TOTAL_AGG,
 )
+from loguru import logger
 from pywaterinfo import Waterinfo
 
 PRECIPITATION_RAW_DIR.mkdir(parents=True, exist_ok=True)
@@ -76,10 +77,14 @@ def _write_timeseries(
     )
 
 
+logger.info("Starting downloads from pywaterinfo")
 # %% Nederzwalm/Zwalmbeek (L06_342)
 station_info_nz = _parse_date_columns(vmm.get_timeseries_list(STATION_ID_NEDERZWALM))
 
 ## Catchment precipitation
+logger.info(
+    f"Downloading {PRECIP_CATCHMENT_LONGNAME} for station {STATION_ID_NEDERZWALM}"
+)
 station_info_nz_precip = station_info_nz.query(
     f"stationparameter_longname == '{PRECIP_CATCHMENT_LONGNAME}'"
     f" and ts_shortname == '{DAILY_AGG}.{TOTAL_AGG}.{PRECIP_CATCHMENT_SUFFIX}'"
@@ -94,6 +99,7 @@ _write_timeseries(
 )
 
 ## Discharge
+logger.info(f"Downloading {DISCHARGE_LONGNAME} for station {STATION_ID_NEDERZWALM}")
 station_info_nz_discharge = station_info_nz.query(
     f"stationparameter_longname == '{DISCHARGE_LONGNAME}'"
     f" and ts_shortname == '{DAILY_AGG}.{MEAN_AGG}'"
@@ -108,6 +114,9 @@ _write_timeseries(
 )
 
 # %% Maarke-Kerkem (P06_014)
+logger.info(
+    f"Downloading {PRECIPITATION_LONGNAME} for station {STATION_ID_MAARKE_KERKEM}"
+)
 station_info_mk = _parse_date_columns(vmm.get_timeseries_list(STATION_ID_MAARKE_KERKEM))
 station_info_mk_precip = station_info_mk.query(
     f"stationparameter_longname == '{PRECIPITATION_LONGNAME}'"
@@ -123,6 +132,9 @@ _write_timeseries(
 )
 
 # %% Waregem (ME05_019)
+logger.info(
+    f"Downloading {POTENTIAL_EVAPOTRANSPIRATION_LONGNAME} for station {STATION_ID_WAREGEM}"
+)
 station_info_waregem = _parse_date_columns(vmm.get_timeseries_list(STATION_ID_WAREGEM))
 station_info_waregem_potential_evapotranspiration = station_info_waregem.query(
     f"stationparameter_longname == '{POTENTIAL_EVAPOTRANSPIRATION_LONGNAME}'"

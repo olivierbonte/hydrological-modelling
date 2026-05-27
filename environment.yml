@@ -11,6 +11,7 @@ dependencies:
   - rioxarray=0.22
   - jupyter-cache=1.0
   - owslib=0.35
+  - loguru=0.7
   - pip
   - pip:
     - rootutils==1.0.*

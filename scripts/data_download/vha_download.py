@@ -9,10 +9,12 @@ from conf import (
     VLAAMSE_HYDROGRAFISCHE_ATLAS_RAW_DIR,
     WFS_ENDPOINT_VHA,
 )
+from loguru import logger
 from owslib.wfs import WebFeatureService
 
 VLAAMSE_HYDROGRAFISCHE_ATLAS_RAW_DIR.mkdir(parents=True, exist_ok=True)
 # %% Download VHA data using WFS
+logger.info(f"Downloading {DATASET_VHA} via WFS from {WFS_ENDPOINT_VHA}")
 wfs = WebFeatureService(WFS_ENDPOINT_VHA, version="2.0.0")
 crs_string = [
     crs
