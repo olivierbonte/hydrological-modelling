@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Study area and data – Exercises Hydrological Modelling</title>
+<title>2&nbsp; Practical information – Exercises Hydrological Modelling</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -33,8 +33,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./1_catchment_delineation.html" rel="next">
-<link href="./practical_info.html" rel="prev">
+<link href="./0_study_area_and_data.html" rel="next">
+<link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8fd6ec95added15416ba442ddea6d3ca.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-544537484d1132e2332c9966fc148d9a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -103,7 +103,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./study_area_and_data.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Study area and data</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./0_practical_info.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Practical information</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -123,13 +123,13 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./practical_info.html" class="sidebar-item-text sidebar-link">
+  <a href="./0_practical_info.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Practical information</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./study_area_and_data.html" class="sidebar-item-text sidebar-link active">
+  <a href="./0_study_area_and_data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Study area and data</span></span></a>
   </div>
 </li>
@@ -174,15 +174,23 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-repository" id="toc-the-repository" class="nav-link active" data-scroll-target="#the-repository"><span class="header-section-number">2.1</span> The repository</a></li>
+  <li><a href="#working-with-quarto-and-python" id="toc-working-with-quarto-and-python" class="nav-link" data-scroll-target="#working-with-quarto-and-python"><span class="header-section-number">2.2</span> Working with Quarto and Python</a></li>
+  <li><a href="#evaluation" id="toc-evaluation" class="nav-link" data-scroll-target="#evaluation"><span class="header-section-number">2.3</span> Evaluation</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-study-area" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Study area and data</span></span></h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Practical information</span></h1>
 </div>
 
 
@@ -199,9 +207,36 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>For these exercises, a hydrological dataset collected in the Zwalm catchment will be used. The Zwalm catchment is located in the center of Belgium and can be considered as a medium-scale catchment.</p>
+<p>Before diving into the exercises, some practical information is provided on how to effectively set up your working environment.</p>
+<section id="the-repository" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="the-repository"><span class="header-section-number">2.1</span> The repository</h2>
+<p>All code used to create this assignment is available at <a href="https://github.com/olivierbonte/hydrological-modelling">https://github.com/olivierbonte/hydrological-modelling</a>. This collection of files is called a repository. To get started, go the the URL above, click on the green <code>Code</code> button and select <code>Download ZIP</code> (see <a href="#fig-screenshot-download-button" class="quarto-xref">Figure&nbsp;<span>2.1</span></a>). Unzip the downloaded file and place the resulting folder at a location of your choice. This folder contains all the files you need to complete the exercises.</p>
+<div id="fig-screenshot-download-button" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-screenshot-download-button-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/screenshot_github_download.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-screenshot-download-button-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: Screenshot of GitHub download button
+</figcaption>
+</figure>
+</div>
+<p>The data needed is not included in the repository, and should be downloaded separately (see <a href="0_study_area_and_data.html" class="quarto-xref"><span>Chapter 3</span></a> for more information).</p>
+<p>Note that this assignment is provided to you in two formats, up to you which one you prefer to work with:</p>
+<ol type="1">
+<li>A website at <a href="https://olivierbonte.github.io/hydrological-modelling/">https://olivierbonte.github.io/hydrological-modelling/</a></li>
+<li>A PDF document, which you can download from <a href="https://olivierbonte.github.io/hydrological-modelling/Exercises-Hydrological-Modelling.pdf">https://olivierbonte.github.io/hydrological-modelling/Exercises-Hydrological-Modelling.pdf</a></li>
+</ol>
+</section>
+<section id="working-with-quarto-and-python" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="working-with-quarto-and-python"><span class="header-section-number">2.2</span> Working with Quarto and Python</h2>
+<p>The idea of this exercise set is that you will use <a href="https://quarto.org/">Quarto</a> to combine your code and your scientific report in a single document.</p>
+</section>
+<section id="evaluation" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="evaluation"><span class="header-section-number">2.3</span> Evaluation</h2>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -606,13 +641,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./practical_info.html" class="pagination-link" aria-label="Practical information">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Practical information</span></span>
+      <a href="./index.html" class="pagination-link" aria-label="Introduction">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./1_catchment_delineation.html" class="pagination-link" aria-label="Exercise 1: Delineation of the Zwalm catchment">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exercise 1: Delineation of the Zwalm catchment</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./0_study_area_and_data.html" class="pagination-link" aria-label="Study area and data">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Study area and data</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

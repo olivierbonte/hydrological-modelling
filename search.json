@@ -10,31 +10,71 @@
     ]
   },
   {
-    "objectID": "practical_info.html",
-    "href": "practical_info.html",
+    "objectID": "0_practical_info.html",
+    "href": "0_practical_info.html",
     "title": "2  Practical information",
     "section": "",
-    "text": "2.1 Working with Quarto",
+    "text": "2.1 The repository\nBefore diving into the exercises, some practical information is provided on how to effectively set up your working environment.\nAll code used to create this assignment is available at https://github.com/olivierbonte/hydrological-modelling. This collection of files is called a repository. To get started, go the the URL above, click on the green Code button and select Download ZIP (see Figure 2.1). Unzip the downloaded file and place the resulting folder at a location of your choice. This folder contains all the files you need to complete the exercises.\nThe data needed is not included in the repository, and should be downloaded separately (see Chapter 3 for more information).\nNote that this assignment is provided to you in two formats, up to you which one you prefer to work with:",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Practical information</span>"
     ]
   },
   {
-    "objectID": "practical_info.html#evaluation",
-    "href": "practical_info.html#evaluation",
+    "objectID": "0_practical_info.html#the-repository",
+    "href": "0_practical_info.html#the-repository",
     "title": "2  Practical information",
-    "section": "2.2 Evaluation",
-    "text": "2.2 Evaluation",
+    "section": "",
+    "text": "Figure 2.1: Screenshot of GitHub download button\n\n\n\n\n\n\nA website at https://olivierbonte.github.io/hydrological-modelling/\nA PDF document, which you can download from https://olivierbonte.github.io/hydrological-modelling/Exercises-Hydrological-Modelling.pdf",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Practical information</span>"
     ]
   },
   {
-    "objectID": "study_area_and_data.html",
-    "href": "study_area_and_data.html",
+    "objectID": "0_practical_info.html#working-with-quarto-and-python",
+    "href": "0_practical_info.html#working-with-quarto-and-python",
+    "title": "2  Practical information",
+    "section": "2.2 Working with Quarto and Python",
+    "text": "2.2 Working with Quarto and Python\nThe idea of this exercise set is that you will use Quarto to combine your code and your scientific report in a single document.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Practical information</span>"
+    ]
+  },
+  {
+    "objectID": "0_practical_info.html#evaluation",
+    "href": "0_practical_info.html#evaluation",
+    "title": "2  Practical information",
+    "section": "2.3 Evaluation",
+    "text": "2.3 Evaluation",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Practical information</span>"
+    ]
+  },
+  {
+    "objectID": "0_study_area_and_data.html",
+    "href": "0_study_area_and_data.html",
     "title": "3  Study area and data",
     "section": "",
-    "text": "For these exercises, a hydrological dataset collected in the Zwalm catchment will be used. The Zwalm catchment is located in the center of Belgium and can be considered as a medium-scale catchment.",
+    "text": "3.1 Catchment data\nFor these exercises, a hydrological dataset of the Zwalm catchment will be used. The Zwalm catchment is located in the center of Belgium and can be considered a medium-scale catchment. Its main tributary, the Zwalmbeek, is visualised in Figure 3.1. During the period 2009-2025, a dataset of daily precipitation, potential evapotranspiration and discharge is at your disposal. The average annual rainfall and potential evapotranspiration of the catchment are 735 mm and 561 mm respectively, typical values for Belgium.\nAll the data needed for this exercise is available on Ufora as data.zip. Download this file, unzip it and place the resulting data folder in the root of this repository (that means at the same level as e.g. scripts).\nAlternatively, you can download and process the data yourself by following the instructions in scripts/data_download/README.md and scripts/data_process/README.md.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study area and data</span>"
+    ]
+  },
+  {
+    "objectID": "0_study_area_and_data.html#meteorological-and-discharge-data",
+    "href": "0_study_area_and_data.html#meteorological-and-discharge-data",
+    "title": "3  Study area and data",
+    "section": "3.2 Meteorological and discharge data",
+    "text": "3.2 Meteorological and discharge data",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study area and data</span>"
+    ]
+  },
+  {
+    "objectID": "0_study_area_and_data.html#digital-terrain-model",
+    "href": "0_study_area_and_data.html#digital-terrain-model",
+    "title": "3  Study area and data",
+    "section": "3.3 Digital terrain model",
+    "text": "3.3 Digital terrain model",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study area and data</span>"
     ]
