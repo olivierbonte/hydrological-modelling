@@ -20,8 +20,8 @@ book:
     logo: "figures/logo_H-CEL_no_background.svg"
   chapters:
     - index.qmd
-    - practical_info.qmd
-    - study_area_and_data.qmd
+    - 0_practical_info.qmd
+    - 0_study_area_and_data.qmd
     - 1_catchment_delineation.qmd
     - 2_model_implementation.qmd
     - 3_model_calibration.qmd

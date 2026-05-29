@@ -14,8 +14,6 @@ Needless to say that for each step, there are many options, and that the choice 
 
 The aim of the practicals is to:
 
-1. Make you acquainted with the advantages and disadvantages
-of the selected algorithms, 
-2. Make you aware of the potential problems related to modelling
-rainfall-runoff relationships, and 
+1. Make you acquainted with the advantages and disadvantages of the selected algorithms, 
+2. Make you aware of the potential problems related to modelling rainfall-runoff relationships, and 
 3. Point you to and make you reflect on existing alternatives for the algorithms selected here.
