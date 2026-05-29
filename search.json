@@ -14,7 +14,7 @@
     "href": "0_practical_info.html",
     "title": "2  Practical information",
     "section": "",
-    "text": "2.1 The repository\nBefore diving into the exercises, some practical information is provided on how to effectively set up your working environment.\nAll code used to create this assignment is available at https://github.com/olivierbonte/hydrological-modelling. This collection of files is called a repository. To get started, go the the URL above, click on the green Code button and select Download ZIP (see Figure 2.1). Unzip the downloaded file and place the resulting folder at a location of your choice. This folder contains all the files you need to complete the exercises.\nThe data needed is not included in the repository, and should be downloaded separately (see Chapter 3 for more information).\nNote that this assignment is provided to you in two formats, up to you which one you prefer to work with:",
+    "text": "2.1 The repository\nBefore diving into the exercises, some practical information is provided on how to effectively set up your working environment.\nAll code used to create this assignment is available at https://github.com/olivierbonte/hydrological-modelling. This collection of files is called a repository. To get started, go the the URL above, click on the green Code button and select Download ZIP (see Figure 2.1). Unzip the downloaded file and place the resulting folder at a location of your choice. This folder contains all the files you need to complete the exercises.\nNote that only the code, but also the processed data is now downloaded. You can find this data in data/processed. More info on the data sources and processing is given in Chapter 3.\nThis assignment is provided to you in two formats, up to you which one you prefer to work with:",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Practical information</span>"
     ]
@@ -54,17 +54,7 @@
     "href": "0_study_area_and_data.html",
     "title": "3  Study area and data",
     "section": "",
-    "text": "3.1 Catchment data\nFor these exercises, a hydrological dataset of the Zwalm catchment will be used. The Zwalm catchment is located in the center of Belgium and can be considered a medium-scale catchment. Its main tributary, the Zwalmbeek, is visualised in Figure 3.1. During the period 2009-2025, a dataset of daily precipitation, potential evapotranspiration and discharge is at your disposal. The average annual rainfall and potential evapotranspiration of the catchment are 735 mm and 561 mm respectively, typical values for Belgium.\nAll the data needed for this exercise is available on Ufora as data.zip. Download this file, unzip it and place the resulting data folder in the root of this repository (that means at the same level as e.g. scripts).\nAlternatively, you can download and process the data yourself by following the instructions in scripts/data_download/README.md and scripts/data_process/README.md.",
-    "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study area and data</span>"
-    ]
-  },
-  {
-    "objectID": "0_study_area_and_data.html#meteorological-and-discharge-data",
-    "href": "0_study_area_and_data.html#meteorological-and-discharge-data",
-    "title": "3  Study area and data",
-    "section": "3.2 Meteorological and discharge data",
-    "text": "3.2 Meteorological and discharge data",
+    "text": "3.1 Catchment data\nFor these exercises, a hydrological dataset of the Zwalm catchment will be used. The Zwalm catchment is located in the center of Belgium and can be considered a medium-scale catchment. Its main tributary, the Zwalmbeek, is visualised in Figure 3.1. During the period 2009-2025, a dataset of daily precipitation, potential evapotranspiration and discharge is at your disposal (see Section 3.3 for more information). The average annual rainfall and potential evapotranspiration of the catchment are 735 mm and 561 mm respectively, typical values for Belgium.\nAs mentioned in Chapter 2, all the processed data is available at data/processed. If interested, you can inspect (and execute) all downloading and processing steps yourself by following the instructions in scripts/data_download/README.md and scripts/data_process/README.md.\nIn the next section, more information is given on the data sources and processing steps for the different types of provided data. Note that all geographic data is provided in the Belgian Lambert 72 (BD72, EPSG:31370) coordinate reference system (CRS).\nThe data in the data/processed/catchment_info folder contains information on the river network and the catchment boundaries in the broad vicinity of the Zwalm catchment. The source of the river network is the Vlaamse Hydrografische Atlas (Vlaamse Milieumaatschappij 2026). The catchment boundaries come from the Oppervlaktewaterlichamen en hun afstroomgebieden, 2022-2027 dataset (Vlaamse Milieumaatschappij 2023). In Chapter 4, you will be asked to delineate the catchment boundary of the Zwalmbeek yourself. The provided catchment boundaries can be used for comparison. Both files are provided as ESRI Shapefiles, called afstroomgebied.shp and vlaamse_hydrografische_atlas.shp respectively.",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study area and data</span>"
     ]
@@ -73,10 +63,30 @@
     "objectID": "0_study_area_and_data.html#digital-terrain-model",
     "href": "0_study_area_and_data.html#digital-terrain-model",
     "title": "3  Study area and data",
-    "section": "3.3 Digital terrain model",
-    "text": "3.3 Digital terrain model",
+    "section": "3.2 Digital terrain model",
+    "text": "3.2 Digital terrain model\nFor the catchment delineation of Chapter 4, a digital terrain model (DTM) is provided in data/processed/digital_terrain_model. This DTM is derived from the Digitaal Hoogtemodel Vlaanderen II DTM at 1m spatial resolution. (Agentschap Digitaal Vlaanderen 2014). To reduce the size of the dataset and speed up the computation, the DTM has been resampled to a spatial resolution of 10.0 m by averaging. The DTM is provided as a GeoTIFF file, called DHMVII_DTM_1m_upscaled_10m.tif.",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study area and data</span>"
+    ]
+  },
+  {
+    "objectID": "0_study_area_and_data.html#sec-study-area-forcings-discharge",
+    "href": "0_study_area_and_data.html#sec-study-area-forcings-discharge",
+    "title": "3  Study area and data",
+    "section": "3.3 Meteorological and discharge data",
+    "text": "3.3 Meteorological and discharge data\nBoth meteorological forcings and observed discharge are provided in data/processed/forcings_discharge. All this data is retrieved from Waterinfo, a website which combines hydro(meteorological) data from both the Flanders Environment Agency and Flanders Hydraulics Research. Programmatic access to the data is possible via the Python package pywaterinfo, as demonstrated (for your information only) in scripts/data_download/waterinfo_download.py.\nThe combined forcings and discharge dataset is provided in the CSV file forcings_discharge.csv. An overview of the the original data sources is given in Table 3.1. The variable “Precipitation of catchment” is a combination of rainfall gauge and radar data, representative for the Zwalm catchment. Potential evapotranspiration is estimated using the Penman equation. Note that because the\n\n\n\n\nTable 3.1: Metadata of the provided daily forcings and discharge dataset, retrieved from Waterinfo. Each station has its own unique ID and coordintates x and y given in BD72\n\n\n\n\n\n\n\n\n\nVariable\nUnits\nStation\nStation ID\nx [m]\ny [m]\n\n\n\n\nPrecipitation\nmm\nMaarke-Kerkem_P\nP06_014\n100 828\n167 846\n\n\nPrecipitation of catchment\nmm\nNederzwalm/Zwalmbeek\nL06_342\n101 966\n175 227\n\n\nPotential Evapotranspiration\nmm\nWaregem_ME\nME05_019\n82 595\n172 779\n\n\nRiver Discharge\nm³/s\nNederzwalm/Zwalmbeek\nL06_342\n101 966\n175 227\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAgentschap Digitaal Vlaanderen. 2014. “Digitaal Hoogtemodel Vlaanderen II, DTM, Raster, 1 m.” Version 2014.01. Agentschap Digitaal Vlaanderen. https://metadata.vlaanderen.be/srv/api/records/f52b1a13-86bc-4b64-8256-88cc0d1a8735.\n\n\nVlaamse Milieumaatschappij. 2023. “Oppervlaktewaterlichamen En Hun Afstroomgebieden, 2022–2027.” Versions 2022-2027. Agentschap Digitaal Vlaanderen. https://metadata.vlaanderen.be/srv/api/records/e8f55350-5c8d-4b15-ac09-1014469c3f04.\n\n\nVlaamse Milieumaatschappij. 2026. “Vlaamse Hydrografische Atlas – Waterlopen, Toestand 03/02/2026.” Versions toestand 03/02/2026. Agentschap Digitaal Vlaanderen. https://metadata.vlaanderen.be/srv/api/records/d5a7a3df-a8a5-4516-92c4-d0128eea7fd7.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Study area and data</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Agentschap Digitaal Vlaanderen. 2014. “Digitaal Hoogtemodel\nVlaanderen II, DTM, Raster, 1 m.”\nVersion 2014.01. Agentschap Digitaal Vlaanderen. https://metadata.vlaanderen.be/srv/api/records/f52b1a13-86bc-4b64-8256-88cc0d1a8735.\n\n\nVlaamse Milieumaatschappij. 2023. “Oppervlaktewaterlichamen En Hun\nAfstroomgebieden, 2022–2027.” Versions 2022-2027. Agentschap\nDigitaal Vlaanderen. https://metadata.vlaanderen.be/srv/api/records/e8f55350-5c8d-4b15-ac09-1014469c3f04.\n\n\nVlaamse Milieumaatschappij. 2026. “Vlaamse Hydrografische Atlas –\nWaterlopen, Toestand 03/02/2026.” Versions toestand 03/02/2026.\nAgentschap Digitaal Vlaanderen. https://metadata.vlaanderen.be/srv/api/records/d5a7a3df-a8a5-4516-92c4-d0128eea7fd7.",
+    "crumbs": [
+      "References"
     ]
   }
 ]
